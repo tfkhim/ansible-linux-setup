@@ -5,6 +5,9 @@
 # This software may be freely distributed under the MIT license. You should
 # have received a copy of the MIT License along with this program.
 
-[arch_linux_desktop]
-gremlin
-ansible_managed
+- hosts: 127.0.0.1
+  connection: local
+  become: yes
+  roles:
+    - common
+

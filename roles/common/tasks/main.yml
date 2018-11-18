@@ -1,0 +1,99 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2018 Thomas Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+##############################################################################
+# Install and configure OpenSSH
+##############################################################################
+
+# See: https://wiki.archlinux.org/index.php/OpenSSH
+
+- name: Install OpenSSH package
+  package:
+    name: openssh
+    state: present
+
+- name: Create a backup of sshd_config
+  copy:
+    remote_src: yes
+    force: no
+    src: /etc/ssh/sshd_config
+    dest: /etc/ssh/sshd_config.orig
+
+- name: Set the SSH port
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    insertafter: "^#Port "
+    line: "Port {{sshd_port}}"
+
+#TODO: Apply SSH hardening
+
+##############################################################################
+# Activate OpenSSH in Systemd
+##############################################################################
+
+# Explicit setting of file permissions doesn't seem necessary. The Arch
+# documentation doesn't mention it for the directory and override file.
+# The default mode is also equivalent to the mode set by systemctl edit.
+#
+# See: https://wiki.archlinux.org/index.php/Systemd#Drop-in_files
+
+- name: Create sshd.socket.d directory containing systemd configuration
+  file:
+    path: /etc/systemd/system/sshd.socket.d
+    state: directory
+    owner: root
+    group: root
+#   mode: u=rwx,g=rx,o=rx
+
+- name: Configure sshd.socket service
+  template:
+    src: sshd_socket_override.conf.j2
+    dest: /etc/systemd/system/sshd.socket.d/override.conf
+    owner: root
+    group: root
+#   mode: u=rw,g=r,o=r
+
+- name: Enable sshd.socket service
+  systemd:
+    daemon_reload: yes
+    name: sshd.socket
+    enabled: yes
+
+##############################################################################
+# Install and configure sudo
+##############################################################################
+
+- name: Install sudo package
+  package:
+    name: sudo
+    state: present
+
+- name: Allow users in 'wheel' group to use sudo
+  copy:
+    src: 01_allow_wheel
+    dest: /etc/sudoers.d/
+    owner: root
+    group: root
+    mode: u=r,g=r
+    validate: /usr/sbin/visudo -csf %s
+
+##############################################################################
+# Create the default user and give him the needed permissions
+##############################################################################
+
+- name: Add '{{username}}' user
+  user:
+    name: "{{username}}"
+    password: "{{password}}"
+    state: present
+
+- name: Add '{{username}}' to 'wheel' group
+  user:
+    name: "{{username}}"
+    groups: wheel
+    append: yes
+

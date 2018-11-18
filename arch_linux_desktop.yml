@@ -7,7 +7,6 @@
 
 - hosts: arch_linux_desktop
   remote_user: root
-  tasks:
-    - name: Run a simple command
-      shell: /bin/echo {{greeting}}
-      ignore_errors: true
+  roles:
+    - common
+
