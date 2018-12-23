@@ -1,0 +1,63 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2018 Thomas Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+- name: Set time zone
+  file:
+    path: /etc/localtime
+    src: /usr/share/zoneinfo/Europe/Berlin
+    state: link
+
+- name: Set the hardware clock to system time
+  shell: hwclock --systohc
+
+- name: Create a backup of locale.gen
+  copy:
+    remote_src: yes
+    force: no
+    src: /etc/locale.gen
+    dest: /etc/locale.gen.orig
+
+- name: Activate locales
+  lineinfile:
+    path: /etc/locale.gen
+    backrefs: yes
+    regexp: '^#({{item}}.*)$'
+    line: '\1'
+  with_items:
+    - 'de_DE.UTF-8'
+    - 'en_US.UTF-8'
+
+- name: Generate locales
+  shell: locale-gen
+
+- name: Configure locale
+  copy:
+    dest: /etc/locale.conf
+    content: "LANG={{locale}}\n"
+  vars:
+    locale: de_DE.UTF-8
+
+- name: Set the keyboard layout
+  copy:
+    dest: /etc/vconsole.conf
+    content: "KEYMAP={{keymap}}\n"
+  vars:
+    keymap: de-latin1
+
+- name: Set the hostname
+  copy:
+    dest: /etc/hostname
+    content: "{{install_hostname}}\n"
+
+- name: Add required lines to /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: '{{item}}'
+  with_items:
+    - '127.0.0.1          localhost'
+    - '::1                localhost'
+

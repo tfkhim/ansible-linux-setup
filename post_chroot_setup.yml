@@ -9,5 +9,6 @@
   connection: local
   become: yes
   roles:
+    - arch_linux_post_chroot
     - common
 
