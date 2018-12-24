@@ -26,8 +26,20 @@
 - name: Set the SSH port
   lineinfile:
     path: /etc/ssh/sshd_config
-    insertafter: "^#Port "
-    line: "Port {{sshd_port}}"
+    insertafter: '^#Port '
+    line: 'Port {{sshd_port}}'
+
+- name: Prohibit root login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    insertafter: '^#PermitRootLogin '
+    line: 'PermitRootLogin no'
+
+- name: Prohibit password authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    insertafter: '^#PasswordAuthentication '
+    line: 'PasswordAuthentication no'
 
 #TODO: Apply SSH hardening
 
@@ -87,13 +99,20 @@
 
 - name: Add '{{username}}' user
   user:
-    name: "{{username}}"
+    name: '{{username}}'
     password: "{{password}}"
     state: present
 
 - name: Add '{{username}}' to 'wheel' group
   user:
-    name: "{{username}}"
+    name: '{{username}}'
     groups: wheel
     append: yes
+
+- name: Install public key for '{{username}}' user
+  authorized_key:
+    user: '{{username}}'
+    state: present
+    key: '{{public_key}}'
+    exclusive: yes
 
