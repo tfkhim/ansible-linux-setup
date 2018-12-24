@@ -5,9 +5,18 @@
 # This software may be freely distributed under the MIT license. You should
 # have received a copy of the MIT License along with this program.
 
-- hosts: 127.0.0.1
-  connection: local
-  become: yes
+- hosts: post_chroot_setup
+  vars_files:
+    - vars/private.yml
+  vars_prompt:
+    - name: install_hostname
+      prompt: The hostname to set
+      private: no
+  vars:
+    timezone: 'Europe/Berlin'
+    keymap: 'de-latin1'
+    locales: ['de_DE.UTF-8', 'en_US.UTF-8']
+    locale: 'de_DE.UTF-8'
   roles:
     - arch_linux_post_chroot
     - common

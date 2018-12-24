@@ -8,7 +8,7 @@
 - name: Set time zone
   file:
     path: /etc/localtime
-    src: /usr/share/zoneinfo/Europe/Berlin
+    src: /usr/share/zoneinfo/{{timezone}}
     state: link
 
 - name: Set the hardware clock to system time
@@ -27,9 +27,7 @@
     backrefs: yes
     regexp: '^#({{item}}.*)$'
     line: '\1'
-  with_items:
-    - 'de_DE.UTF-8'
-    - 'en_US.UTF-8'
+  with_items: "{{locales}}"
 
 - name: Generate locales
   shell: locale-gen
@@ -38,15 +36,11 @@
   copy:
     dest: /etc/locale.conf
     content: "LANG={{locale}}\n"
-  vars:
-    locale: de_DE.UTF-8
 
 - name: Set the keyboard layout
   copy:
     dest: /etc/vconsole.conf
     content: "KEYMAP={{keymap}}\n"
-  vars:
-    keymap: de-latin1
 
 - name: Set the hostname
   copy:
@@ -60,4 +54,5 @@
   with_items:
     - '127.0.0.1          localhost'
     - '::1                localhost'
+    - '127.0.1.1          {{install_hostname}}.localdomain         {{install_hostname}}'
 

@@ -6,7 +6,8 @@
 # have received a copy of the MIT License along with this program.
 
 - hosts: arch_linux_desktop
-  remote_user: root
+  vars_files:
+    - vars/private.yml
   roles:
     - common
 
