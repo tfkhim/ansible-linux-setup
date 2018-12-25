@@ -10,4 +10,5 @@
     - vars/private.yml
   roles:
     - common
+    - xfce
 
