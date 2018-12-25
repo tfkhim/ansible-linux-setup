@@ -1,0 +1,117 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2018 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+##############################################################################
+# Install and configure packages required for Xfce desktop environment
+##############################################################################
+
+- name: Install Xfce package
+  package:
+    name: xfce4
+    state: present
+
+##############################################################################
+# Install and configure packages required for screen locking
+##############################################################################
+
+- name: Install light-locker package
+  package:
+    name: light-locker
+    state: present
+
+- name: Set the LockCommand
+  shell: xfconf-query -c xfce4-session -p /general/LockCommand -s "light-locker-command --lock" --create -t string
+  become: yes
+  become_user: '{{username}}'
+
+- name: '[XFCE 4.12 WORKAROUND] Install xflock4 script from unreleased 4.13 Xfce version'
+  get_url:
+    url: https://git.xfce.org/xfce/xfce4-session/plain/scripts/xflock4
+    dest: /usr/bin/xflock4
+    checksum: sha256:27f56d7b43d52ed6a8a1c687ae24e680564cb5326bce6dc61f5258999c11854a
+    owner: root
+    group: root
+    mode: o=rwx,g=rx,o=rx
+
+##############################################################################
+# Theme, fonts and design configuration
+##############################################################################
+
+- name: Install Murrine GTK engine
+  package:
+    name: gtk-engine-murrine
+    state: present
+
+- name: Install Numix GTK theme
+  package:
+    name: numix-gtk-theme
+    state: present
+
+- name: Install Faenza icon theme
+  package:
+    name: faenza-icon-theme
+    state: present
+
+- name: Install DejaVu font
+  package:
+    name: ttf-dejavu
+    state: present
+
+- name: Install Liberation font
+  package:
+    name: ttf-liberation
+    state: present
+
+- name: Create a directory for custom background images
+  file:
+    path: /usr/share/backgrounds/custom/
+    state: directory
+    owner: root
+    group: root
+
+- name: Copy background image
+  copy:
+    src: '{{background_image}}'
+    dest: /usr/share/backgrounds/custom/ansible_managed.jpg
+    owner: root
+    group: root
+
+- name: Create a backup of lightdm-gtk-greeter.conf
+  copy:
+    remote_src: yes
+    force: no
+    src: /etc/lightdm/lightdm-gtk-greeter.conf
+    dest: /etc/lightdm/lightdm-gtk-greeter.conf.orig
+
+- name: Set LightDM background image
+  ini_file:
+    path: /etc/lightdm/lightdm-gtk-greeter.conf
+    section: greeter
+    option: background
+    value: /usr/share/backgrounds/custom/ansible_managed.jpg
+
+- name: Set LightDM GTK theme
+  ini_file:
+    path: /etc/lightdm/lightdm-gtk-greeter.conf
+    section: greeter
+    option: theme-name
+    value: Numix
+
+- name: Set LightDM icon theme
+  ini_file:
+    path: /etc/lightdm/lightdm-gtk-greeter.conf
+    section: greeter
+    option: icon-theme-name
+    value: Faenza
+
+- name: Set LightDM font
+  ini_file:
+    path: /etc/lightdm/lightdm-gtk-greeter.conf
+    section: greeter
+    option: font-name
+    value: Liberation Sans 12
+

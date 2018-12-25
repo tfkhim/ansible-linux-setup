@@ -1,0 +1,21 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2018 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+##############################################################################
+# Install and configure packages required for KDE desktop environment
+##############################################################################
+
+- name: Install KDE package
+  package:
+    name: plasma-desktop
+    state: present
+
+- name: Install KDE package
+  package:
+    name: sddm-kcm
+    state: present
+

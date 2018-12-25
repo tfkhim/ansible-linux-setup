@@ -1,0 +1,21 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2018 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+##############################################################################
+# Install and configure SDDM packages
+##############################################################################
+
+- name: Install SDDM package
+  package:
+    name: sddm
+    state: present
+
+- name: Enable SDDM service
+  service:
+    name: sddm
+    enabled: yes
+

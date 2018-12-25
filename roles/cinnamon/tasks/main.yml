@@ -1,0 +1,16 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2018 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+##############################################################################
+# Install and configure packages required for Cinnamon desktop environment
+##############################################################################
+
+- name: Install Cinnamon package
+  package:
+    name: cinnamon
+    state: present
+

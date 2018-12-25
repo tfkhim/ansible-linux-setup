@@ -1,0 +1,27 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2018 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+##############################################################################
+# Install and configure xorg server package
+##############################################################################
+
+- name: Install Xorg server package
+  package:
+    name: xorg-server
+    state: present
+
+##############################################################################
+# Usability configuration
+##############################################################################
+
+- name: Install keyboard layout
+  copy:
+    src: 90_xkb_layout.conf
+    dest: /etc/X11/xorg.conf.d/90_xkb_layout.conf
+    owner: root
+    group: root
+
