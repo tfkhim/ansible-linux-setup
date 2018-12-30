@@ -1,0 +1,23 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2018 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+##############################################################################
+# Install and configure NetworkManager
+##############################################################################
+
+# See: https://wiki.archlinux.org/index.php/NetworkManager
+
+- name: Install NetworkManager package
+  package:
+    name: networkmanager
+    state: present
+
+- name: Enable NetworkManager service
+  service:
+    name: NetworkManager
+    enabled: yes
+

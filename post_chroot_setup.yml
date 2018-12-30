@@ -20,4 +20,5 @@
   roles:
     - arch_linux_post_chroot
     - common
+    - networkmanager
 

@@ -10,5 +10,6 @@
     - vars/private.yml
   roles:
     - common
+    - networkmanager
     - kde
 
