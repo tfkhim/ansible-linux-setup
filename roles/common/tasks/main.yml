@@ -94,6 +94,15 @@
     validate: /usr/sbin/visudo -csf %s
 
 ##############################################################################
+# Install packages for improved usability
+##############################################################################
+
+- name: Install Bash completion package
+  package:
+    name: bash-completion
+    state: present
+
+##############################################################################
 # Create the default user and give him the needed permissions
 ##############################################################################
 
