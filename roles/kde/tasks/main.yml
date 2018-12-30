@@ -14,8 +14,44 @@
     name: plasma-desktop
     state: present
 
-- name: Install KDE package
+- name: Install SDDM configuration plugin package
   package:
     name: sddm-kcm
     state: present
+
+- name: Install Konsole package
+  package:
+    name: konsole
+    state: present
+
+- name: Install Dolphin package
+  package:
+    name: dolphin
+    state: present
+
+- name: Install Ark Archive manager package
+  package:
+    name: ark
+    state: present
+
+- name: Install Gwenview image viewer package
+  package:
+    name: gwenview
+    state: present
+
+- name: Install Okular document viewer package
+  package:
+    name: okular
+    state: present
+
+- name: Check if networkmanager package is installed
+  shell: pacman -Q networkmanager
+  ignore_errors: yes
+  register: check_networkmanager
+
+- name: Install the NetworkManager applet
+  package:
+    name: plasma-nm
+    state: present
+  when: check_networkmanager.rc == 0
 
