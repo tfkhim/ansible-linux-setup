@@ -15,6 +15,20 @@
     state: present
 
 ##############################################################################
+# Install fonts
+##############################################################################
+
+- name: Install DejaVu font
+  package:
+    name: ttf-dejavu
+    state: present
+
+- name: Install Liberation font
+  package:
+    name: ttf-liberation
+    state: present
+
+##############################################################################
 # Usability configuration
 ##############################################################################
 

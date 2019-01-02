@@ -38,7 +38,7 @@
     mode: o=rwx,g=rx,o=rx
 
 ##############################################################################
-# Theme, fonts and design configuration
+# Theme and design configuration
 ##############################################################################
 
 - name: Install Murrine GTK engine
@@ -54,16 +54,6 @@
 - name: Install Faenza icon theme
   package:
     name: faenza-icon-theme
-    state: present
-
-- name: Install DejaVu font
-  package:
-    name: ttf-dejavu
-    state: present
-
-- name: Install Liberation font
-  package:
-    name: ttf-liberation
     state: present
 
 - name: Create a directory for custom background images

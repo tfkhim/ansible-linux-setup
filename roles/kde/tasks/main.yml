@@ -61,3 +61,27 @@
     state: present
   when: kde_install_powerdevil
 
+- name: Install PulseAudio package
+  package:
+    name: pulseaudio
+    state: present
+
+- name: Install PulseAudio applet
+  package:
+    name: plasma-pa
+    state: present
+
+##############################################################################
+# Theme and design configuration
+##############################################################################
+
+- name: Install breeze-gtk package
+  package:
+    name: breeze-gtk
+    state: present
+
+- name: Install GTK configuration plugin
+  package:
+    name: kde-gtk-config
+    state: present
+
