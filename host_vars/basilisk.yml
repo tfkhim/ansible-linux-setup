@@ -3,3 +3,5 @@ ansible_port: '{{sshd_port}}'
 ansible_user: '{{username}}'
 ansible_become: yes
 
+kde_install_powerdevil: yes
+

@@ -55,3 +55,9 @@
     state: present
   when: check_networkmanager.rc == 0
 
+- name: Install powerdevil package
+  package:
+    name: powerdevil
+    state: present
+  when: kde_install_powerdevil
+
