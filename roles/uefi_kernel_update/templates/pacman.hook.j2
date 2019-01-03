@@ -1,0 +1,16 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = File
+Target = boot/vmlinuz-*
+Target = boot/*-ucode.img
+Target = usr/lib/initcpio/*
+Target = usr/lib/systemd/boot/efi/linux*.efi.stub
+Target = usr/share/systemd/bootctl/splash-arch.bmp
+
+[Action]
+Description = Updating UEFI kernel images...
+When = PostTransaction
+Exec = {{uefi_kernel_update_install_dir}}/update.sh
+NeedsTargets
+

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Private Ansible playbook
+#
+# Copyright (C) 2018 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+source "{{uefi_kernel_update_install_dir}}/update.config"
+
+CMD_FILE="$(mktemp)"
+trap 'rm -f "${CMD_FILE}"' EXIT
+
+echo -n "${KERNEL_COMMAND_LINE}" > "${CMD_FILE}"
+
+objcopy \
+  --add-section .osrel="${OS_REL_FILE}"      --change-section-vma   .osrel=0x20000   \
+  --add-section .cmdline="${CMD_FILE}"       --change-section-vma .cmdline=0x30000   \
+  --add-section .splash="${SPLASH_FILE}"     --change-section-vma  .splash=0x40000   \
+  --add-section .linux="${LINUX_IMAGE}"      --change-section-vma   .linux=0x2000000 \
+  --add-section .initrd="${INITRD_FILE}"     --change-section-vma  .initrd=0x3000000 \
+  "${EFI_STUB_FILE}" \
+  "${OUTPUT_FILE}"
+

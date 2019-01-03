@@ -1,0 +1,16 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2018 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+uefi_kernel_update_install_dir: '/opt/uefi_kernel_update'
+
+uefi_kernel_update_os_rel_file: '/usr/lib/os-release'
+uefi_kernel_update_linux_image: '/boot/vmlinuz-linux'
+uefi_kernel_update_splash_file: '/usr/share/systemd/bootctl/splash-arch.bmp'
+uefi_kernel_update_initrd_file: '/boot/initramfs-linux.img'
+uefi_kernel_update_stub_file: '/usr/lib/systemd/boot/efi/linuxx64.efi.stub'
+uefi_kernel_update_output_file: '/boot/efifile-linux.efi'
+
