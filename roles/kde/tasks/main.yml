@@ -85,3 +85,17 @@
     name: kde-gtk-config
     state: present
 
+- name: Create sddm.conf.d directory containing SDDM configuration
+  file:
+    path: /etc/sddm.conf.d
+    state: directory
+    owner: root
+    group: root
+
+- name: Configure the SDDM theme
+  template:
+    src: 99_theme.conf.j2
+    dest: /etc/sddm.conf.d/99_theme.conf
+    owner: root
+    group: root
+

@@ -7,3 +7,6 @@
 
 kde_install_powerdevil: no
 
+kde_sddm_theme: breeze
+kde_sddm_cursor_theme: breeze_cursors
+
