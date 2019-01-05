@@ -45,7 +45,7 @@
     state: present
 
 - name: Check if networkmanager package is installed
-  shell: pacman -Q networkmanager
+  command: pacman -Q networkmanager
   ignore_errors: yes
   register: check_networkmanager
 

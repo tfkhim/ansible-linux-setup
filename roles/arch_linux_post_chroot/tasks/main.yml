@@ -6,13 +6,11 @@
 # have received a copy of the MIT License along with this program.
 
 - name: Set time zone
-  file:
-    path: /etc/localtime
-    src: /usr/share/zoneinfo/{{timezone}}
-    state: link
+  timezone:
+    name: '{{timezone}}'
 
 - name: Set the hardware clock to system time
-  shell: hwclock --systohc
+  command: hwclock --systohc
 
 - name: Create a backup of locale.gen
   copy:
@@ -22,15 +20,10 @@
     dest: /etc/locale.gen.orig
 
 - name: Activate locales
-  lineinfile:
-    path: /etc/locale.gen
-    backrefs: yes
-    regexp: '^#({{item}}.*)$'
-    line: '\1'
-  with_items: "{{locales}}"
-
-- name: Generate locales
-  shell: locale-gen
+  locale_gen:
+    name: '{{item}}'
+    state: present
+  with_items: '{{locales}}'
 
 - name: Configure locale
   copy:
@@ -43,9 +36,8 @@
     content: "KEYMAP={{keymap}}\n"
 
 - name: Set the hostname
-  copy:
-    dest: /etc/hostname
-    content: "{{install_hostname}}\n"
+  hostname:
+    name: '{{install_hostname}}'
 
 - name: Add required lines to /etc/hosts
   lineinfile:

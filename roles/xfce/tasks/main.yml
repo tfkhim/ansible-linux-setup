@@ -24,7 +24,7 @@
     state: present
 
 - name: Set the LockCommand
-  shell: xfconf-query -c xfce4-session -p /general/LockCommand -s "light-locker-command --lock" --create -t string
+  command: xfconf-query -c xfce4-session -p /general/LockCommand -s "light-locker-command --lock" --create -t string
   become: yes
   become_user: '{{username}}'
 
