@@ -21,3 +21,17 @@
   with_items:
     - firefox-i18n-de
 
+##############################################################################
+# Install KeePass
+##############################################################################
+
+- name: Install KeePass package
+  package:
+    name: keepass
+    state: present
+
+- name: Install xdotool package for autotyping
+  package:
+    name: xdotool
+    state: present
+
