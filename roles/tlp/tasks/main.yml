@@ -1,0 +1,61 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2018 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+##############################################################################
+# Install and configure TLP
+##############################################################################
+
+- name: Install the TLP and optional packages
+  package:
+    name: '{{item}}'
+    state: present
+  with_items:
+    - tlp
+    - lsb-release
+    - x86_energy_perf_policy
+
+- name: Install optional packages for ThinkPad laptops
+  package:
+    name: acpi_call
+    state: present
+  when: tlp_is_thinkpad
+
+- name: Enable TLP services
+  service:
+    name: '{{item}}'
+    enabled: yes
+  with_items:
+    - tlp
+    - tlp-sleep
+
+- name: Mask conflicting services
+  systemd:
+    name: '{{item}}'
+    masked: yes
+  with_items:
+    - systemd-rfkill.service
+    - systemd-rfkill.socket
+
+- name: Create a backup of TLP configuration
+  copy:
+    remote_src: yes
+    force: no
+    src: /etc/default/tlp
+    dest: /etc/default/tlp.orig
+
+- name: Set the battery thresholds
+  lineinfile:
+    path: /etc/default/tlp
+    regex: '^#?{{item.key}}=.*$'
+    line: '{{item.key}}={{item.value}}'
+  with_items:
+    - {key: START_CHARGE_THRESH_BAT0, value: 70}
+    - {key: STOP_CHARGE_THRESH_BAT0, value: 75}
+    - {key: START_CHARGE_THRESH_BAT1, value: 70}
+    - {key: STOP_CHARGE_THRESH_BAT1, value: 75}
+  when: tlp_is_thinkpad
+

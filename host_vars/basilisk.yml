@@ -8,3 +8,6 @@ uefi_kernel_update_output_file: '/boot/efi_partition/EFI/Linux/arch_linux.efi'
 
 kde_install_powerdevil: yes
 
+install_tlp: yes
+tlp_is_thinkpad: yes
+
