@@ -103,6 +103,16 @@
     state: present
 
 ##############################################################################
+# Install and configure NTP
+##############################################################################
+
+- name: Enable systemd-timesynced service
+  service:
+    name: systemd-timesyncd
+    enabled: yes
+    state: started
+
+##############################################################################
 # Create the default user and give him the needed permissions
 ##############################################################################
 
