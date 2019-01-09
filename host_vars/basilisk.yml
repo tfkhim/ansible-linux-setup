@@ -11,3 +11,5 @@ kde_install_powerdevil: yes
 install_tlp: yes
 tlp_is_thinkpad: yes
 
+vbox_allowed_users: ['{{username}}']
+

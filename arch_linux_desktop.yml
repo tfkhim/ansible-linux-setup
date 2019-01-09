@@ -14,5 +14,6 @@
     - role: tlp
       when: install_tlp is defined and install_tlp
     - kde
+    - virtualbox
     - desktop_applications
 
