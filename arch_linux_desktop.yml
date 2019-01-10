@@ -13,6 +13,8 @@
     - networkmanager
     - role: tlp
       when: install_tlp is defined and install_tlp
+    - role: ansible_controller
+      when: install_ansible is defined and install_ansible
     - kde
     - virtualbox
     - desktop_applications
