@@ -35,3 +35,12 @@
     name: xdotool
     state: present
 
+##############################################################################
+# Install a text editor
+##############################################################################
+
+- name: Install Visual Studio Code
+  package:
+    name: code
+    state: present
+
