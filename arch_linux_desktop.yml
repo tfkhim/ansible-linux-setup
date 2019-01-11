@@ -8,6 +8,8 @@
 - hosts: arch_linux_desktop
   vars_files:
     - vars/private.yml
+  vars:
+    - firefox_users: ['{{username}}']
   roles:
     - common
     - networkmanager

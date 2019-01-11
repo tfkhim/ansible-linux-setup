@@ -21,6 +21,72 @@
   with_items:
     - firefox-i18n-de
 
+- name: Create .mozilla folder
+  become_user: '{{item}}'
+  become: yes
+  file:
+    path: /home/{{item}}/.mozilla
+    state: directory
+    mode: u=rwx,g=,o=
+  loop: '{{firefox_users}}'
+
+- name: Create firefox folder
+  become_user: '{{item}}'
+  become: yes
+  file:
+    path: /home/{{item}}/.mozilla/firefox
+    state: directory
+    mode: u=rwx,g=,o=
+  loop: '{{firefox_users}}'
+
+- name: Create profile folder
+  become_user: '{{item}}'
+  become: yes
+  file:
+    path: /home/{{item}}/.mozilla/firefox/abcdefgh.default
+    state: directory
+    mode: u=rwx,g=,o=
+  loop: '{{firefox_users}}'
+
+- name: Copy profile configuration file
+  become_user: '{{item}}'
+  become: yes
+  copy:
+    force: no
+    src: profiles.ini
+    dest: /home/{{item}}/.mozilla/firefox
+    mode: u=rw,g=r,o=r
+  loop: '{{firefox_users}}'
+
+- name: Create the times.json file
+  become_user: '{{item}}'
+  become: yes
+  template:
+    force: no
+    src: times.json.j2
+    dest: /home/{{item}}/.mozilla/firefox/abcdefgh.default/times.json
+    mode: u=rw,g=,o=
+  loop: '{{firefox_users}}'
+
+- name: Create an empty perfs.js file
+  become_user: '{{item}}'
+  become: yes
+  copy:
+    force: no
+    content: ''
+    dest: /home/{{item}}/.mozilla/firefox/abcdefgh.default/prefs.js
+    mode: u=rw,g=,o=
+  loop: '{{firefox_users}}'
+
+- name: Copy the user.js file
+  become_user: '{{item}}'
+  become: yes
+  copy:
+    src: user.js
+    dest: /home/{{item}}/.mozilla/firefox/abcdefgh.default
+    mode: u=rw,g=,o=
+  loop: '{{firefox_users}}'
+
 ##############################################################################
 # Install KeePass
 ##############################################################################
