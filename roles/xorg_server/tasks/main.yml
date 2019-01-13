@@ -28,6 +28,11 @@
     name: ttf-liberation
     state: present
 
+- name: Install Noto Emoji font
+  package:
+    name: noto-fonts-emoji
+    state: present
+
 ##############################################################################
 # Usability configuration
 ##############################################################################
