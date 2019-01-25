@@ -7,6 +7,9 @@ ssh_enable_daemon: no
 
 install_ansible: yes
 
+install_fwupd: yes
+fwupd_esp_mount_point: /boot/efi_partition
+
 uefi_kernel_update_kernel_command_line: 'cryptdevice=UUID=f124b05c-7666-4949-95f4-51948110d324:cryptlvm root=/dev/VolumeGroup00/root resume=/dev/VolumeGroup00/swap'
 uefi_kernel_update_output_file: '/boot/efi_partition/EFI/Linux/arch_linux.efi'
 
@@ -16,4 +19,3 @@ install_tlp: yes
 tlp_is_thinkpad: yes
 
 vbox_allowed_users: ['{{username}}']
-

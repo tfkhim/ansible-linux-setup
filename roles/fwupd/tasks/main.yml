@@ -1,0 +1,31 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2018 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+- name: Install fwupd package
+  package:
+    name: fwupd
+    state: present
+
+- name: Enable fwupd service
+  service:
+    name: fwupd
+    enabled: yes
+
+- name: Create a backup of uefi.conf
+  copy:
+    remote_src: yes
+    force: no
+    src: /etc/fwupd/uefi.conf
+    dest: /etc/fwupd/uefi.conf.orig
+
+- name: Set the path to the EFI system partition
+  ini_file:
+    path: /etc/fwupd/uefi.conf
+    section: uefi
+    option: OverrideESPMountPoint
+    value: '{{fwupd_esp_mount_point}}'
+  when: fwupd_esp_mount_point is defined
