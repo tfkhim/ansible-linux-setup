@@ -73,7 +73,7 @@
   systemd:
     daemon_reload: yes
     name: sshd.socket
-    enabled: yes
+    enabled: '{{ssh_enable_daemon}}'
 
 ##############################################################################
 # Install and configure sudo
