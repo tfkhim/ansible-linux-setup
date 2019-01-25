@@ -110,3 +110,11 @@
     name: code
     state: present
 
+##############################################################################
+# Install a Flatpak
+##############################################################################
+
+- name: Install Flatpak
+  package:
+    name: flatpak
+    state: present
