@@ -71,6 +71,11 @@
     name: plasma-pa
     state: present
 
+- name: Install kscreen package for display configuration
+  package:
+    name: kscreen
+    state: present
+
 ##############################################################################
 # Theme and design configuration
 ##############################################################################
