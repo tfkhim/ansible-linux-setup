@@ -111,10 +111,25 @@
     state: present
 
 ##############################################################################
-# Install a Flatpak
+# Install Flatpak
 ##############################################################################
 
 - name: Install Flatpak
   package:
     name: flatpak
     state: present
+
+##############################################################################
+# Install CUPS
+##############################################################################
+
+- name: Install CUPS package
+  package:
+    name: [cups, foomatic-db-engine, foomatic-db-gutenprint-ppds, gutenprint]
+    state: present
+
+- name: Enable the CUPS service
+  service:
+    name: org.cups.cupsd
+    enabled: yes
+    state: started
