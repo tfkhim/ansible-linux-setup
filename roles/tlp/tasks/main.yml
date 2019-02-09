@@ -53,9 +53,9 @@
     regex: '^#?{{item.key}}=.*$'
     line: '{{item.key}}={{item.value}}'
   with_items:
-    - {key: START_CHARGE_THRESH_BAT0, value: 70}
-    - {key: STOP_CHARGE_THRESH_BAT0, value: 75}
-    - {key: START_CHARGE_THRESH_BAT1, value: 70}
-    - {key: STOP_CHARGE_THRESH_BAT1, value: 75}
+    - {key: START_CHARGE_THRESH_BAT0, value: '{{tlp_start_charge}}'}
+    - {key: STOP_CHARGE_THRESH_BAT0, value: '{{tlp_stop_charge}}'}
+    - {key: START_CHARGE_THRESH_BAT1, value: '{{tlp_start_charge}}'}
+    - {key: STOP_CHARGE_THRESH_BAT1, value: '{{tlp_stop_charge}}'}
   when: tlp_is_thinkpad
 

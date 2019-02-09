@@ -7,3 +7,5 @@
 
 tlp_is_thinkpad: no
 
+tlp_start_charge: 70
+tlp_stop_charge: 80

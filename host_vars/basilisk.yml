@@ -17,5 +17,7 @@ kde_install_powerdevil: yes
 
 install_tlp: yes
 tlp_is_thinkpad: yes
+tlp_start_charge: 50
+tlp_stop_charge: 55
 
 vbox_allowed_users: ['{{username}}']
