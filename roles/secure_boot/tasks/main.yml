@@ -1,0 +1,47 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2018 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+- name: Create the directory for the key files
+  file:
+    path: /root/secure-boot
+    state: directory
+    mode: u=rwx,g=,o=
+
+- name: Copy DB.key and DB.crt files
+  copy:
+    src: '{{item.src}}'
+    dest: '{{item.dest}}'
+    mode: u=rw,g=,o=
+  with_items:
+    - {src: 'private_data/db.key', dest: '/root/secure-boot/DB.key'}
+    - {src: 'private_data/db.crt', dest: '/root/secure-boot/DB.crt'}
+
+- name: Install the sbupdate AUR package
+  include_role:
+    name: aur_package
+  vars:
+    aur_build_user: aur_builder
+    package_name: sbupdate-git
+    git_version: master
+    aur_build_dir: /home/aur_builder/aur
+
+- name: Create a backup of sbupdate configuration
+  copy:
+    remote_src: yes
+    force: no
+    src: /etc/default/sbupdate
+    dest: /etc/default/sbupdate.orig
+
+- name: Update sbupdate configuration
+  lineinfile:
+    path: /etc/default/sbupdate
+    regex: '^#?{{item.key}}=.*$'
+    line: '{{item.key}}="{{item.value}}"'
+  with_items:
+    - {key: CMDLINE_DEFAULT, value: '{{secure_boot_kernel_command_line}}'}
+    - {key: ESP_DIR, value: '{{secure_boot_esp_dir}}'}
+    - {key: OUT_DIR, value: '{{secure_boot_out_dir}}'}

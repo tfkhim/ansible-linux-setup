@@ -1,0 +1,35 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2018 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+##############################################################################
+# Install an AUR package
+##############################################################################
+
+- name: Check required variables
+  fail:
+    msg: Variable '{{ item }}' is not defined
+  when: item not in vars
+  with_items:
+    - aur_build_user
+    - package_name
+    - git_version
+
+- name: Clone the Git repository
+  become_user: '{{aur_build_user}}'
+  become: yes
+  git:
+    repo: 'https://aur.archlinux.org/{{package_name}}.git'
+    dest: '{{aur_build_dir}}/{{package_name}}'
+    force: yes
+    version: '{{git_version}}'
+
+- name: Build the package
+  become_user: '{{aur_build_user}}'
+  become: yes
+  command: makepkg --install --force --syncdeps --rmdeps --cleanbuild --noconfirm --noprogressbar
+  args:
+    chdir: '{{aur_build_dir}}/{{package_name}}'

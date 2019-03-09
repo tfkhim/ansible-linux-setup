@@ -9,5 +9,4 @@
   vars_files:
     - vars/private.yml
   roles:
-    - uefi_kernel_update
-
+    - secure_boot
