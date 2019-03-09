@@ -3,6 +3,8 @@ ansible_port: '{{sshd_port}}'
 ansible_user: '{{username}}'
 ansible_become: yes
 
+microcode_pkg: intel-ucode
+
 ssh_enable_daemon: no
 
 install_ansible: yes

@@ -113,6 +113,16 @@
     state: started
 
 ##############################################################################
+# Install CPU microcode package
+##############################################################################
+
+- name: Install microcode package
+  package:
+    name: '{{microcode_pkg}}'
+    state: present
+  when: microcode_pkg is defined
+
+##############################################################################
 # Create the default user and give him the needed permissions
 ##############################################################################
 
