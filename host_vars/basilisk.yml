@@ -7,6 +7,8 @@ microcode_pkg: intel-ucode
 
 ssh_enable_daemon: no
 
+nm_install_openvpn: yes
+
 install_ansible: yes
 
 install_fwupd: yes

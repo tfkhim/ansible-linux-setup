@@ -16,8 +16,13 @@
     name: networkmanager
     state: present
 
+- name: Install the OpenVPN integraton
+  package:
+    name: networkmanager-openvpn
+    state: present
+  when: nm_install_openvpn
+
 - name: Enable NetworkManager service
   service:
     name: NetworkManager
     enabled: yes
-
