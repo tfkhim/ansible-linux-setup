@@ -13,6 +13,7 @@
   roles:
     - common
     - networkmanager
+    - local_unbound
     - role: fwupd
       when: install_fwupd is defined and install_fwupd
     - role: tlp

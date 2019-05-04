@@ -1,0 +1,58 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2019 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+##############################################################################
+# Install and configure unbound as a local caching, validating DNS resolver
+##############################################################################
+
+# See: https://wiki.archlinux.org/index.php/Unbound
+
+- name: Install NetworkManager package
+  package:
+    name: [unbound, expat, openresolv]
+    state: present
+
+- name: Create a backup of resolvconf.conf
+  copy:
+    remote_src: yes
+    force: no
+    src: /etc/resolvconf.conf
+    dest: /etc/resolvconf.conf.orig
+
+- name: Create a backup of unbound.conf
+  copy:
+    remote_src: yes
+    force: no
+    src: /etc/unbound/unbound.conf
+    dest: /etc/unbound/unbound.conf.orig
+
+- name: Configure openresolv to use unbound
+  lineinfile:
+    path: /etc/resolvconf.conf
+    regex: '^#?{{item.key}}=.*$'
+    line: '{{item.key}}="{{item.value}}"'
+  with_items:
+    - {key: name_servers, value: '::1 127.0.0.1'}
+    - {key: private_interfaces, value: '*'}
+    - {key: unbound_conf, value: '/etc/unbound/resolvconf.conf'}
+  register: resolvconf
+
+- name: Update the resolv.conf fine
+  command: resolvconf -u
+  when: resolvconf.changed
+
+- name: Copy unbound configuration
+  copy:
+    src: unbound.conf
+    dest: /etc/unbound/unbound.conf
+    validate: /usr/bin/unbound-checkconf %s
+
+- name: Enable unbound service
+  service:
+    name: unbound
+    enabled: yes
+    state: started
