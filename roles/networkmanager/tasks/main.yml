@@ -13,8 +13,13 @@
 
 - name: Install NetworkManager package
   package:
-    name: networkmanager
+    name: [networkmanager, openresolv]
     state: present
+
+- name: Configure NetworkManager to use openresolv
+  copy:
+    src: rc-manager.conf
+    dest: /etc/NetworkManager/conf.d
 
 - name: Install the OpenVPN integraton
   package:
