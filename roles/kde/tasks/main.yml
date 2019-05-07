@@ -34,6 +34,11 @@
     name: ark
     state: present
 
+- name: Install KWalletManager package
+  package:
+    name: [kwallet, kwallet-pam, kwalletmanager]
+    state: present
+
 - name: Install Gwenview image viewer package
   package:
     name: gwenview
