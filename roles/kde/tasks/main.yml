@@ -19,34 +19,22 @@
     name: sddm-kcm
     state: present
 
-- name: Install Konsole package
+- name: Install KDE application packages
   package:
-    name: konsole
-    state: present
-
-- name: Install Dolphin package
-  package:
-    name: dolphin
-    state: present
-
-- name: Install Ark Archive manager package
-  package:
-    name: ark
-    state: present
-
-- name: Install KWalletManager package
-  package:
-    name: [kwallet, kwallet-pam, kwalletmanager]
-    state: present
-
-- name: Install Gwenview image viewer package
-  package:
-    name: gwenview
-    state: present
-
-- name: Install Okular document viewer package
-  package:
-    name: okular
+    name:
+      - konsole
+      - dolphin
+      - ark
+      - kwallet
+      - kwallet-pam
+      - kwalletmanager
+      - gwenview
+      - okular
+      - pulseaudio
+      - plasma-pa
+      - phonon-qt5
+      - phonon-qt5-gstreamer
+      - kscreen
     state: present
 
 - name: Check if networkmanager package is installed
@@ -66,20 +54,23 @@
     state: present
   when: kde_install_powerdevil
 
-- name: Install PulseAudio package
+- name: Install powerdevil package
   package:
-    name: pulseaudio
+    name: powerdevil
     state: present
+  when: kde_install_powerdevil
 
-- name: Install PulseAudio applet
+- name: Install va-api support for Phonon
   package:
-    name: plasma-pa
+    name: gstreamer-vaapi
     state: present
+  when: kde_va_api == 'va-api'
 
-- name: Install kscreen package for display configuration
+- name: Install VDPAU support for Phonon
   package:
-    name: kscreen
+    name: gst-plugins-bad
     state: present
+  when: kde_va_api == 'vdpau'
 
 ##############################################################################
 # Theme and design configuration

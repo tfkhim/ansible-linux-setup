@@ -3,6 +3,10 @@ ansible_port: '{{sshd_port}}'
 ansible_user: '{{username}}'
 ansible_become: yes
 
+va_api_pkg: [intel-media-driver]
+va_api_driver_name: iHD
+va_api_driver_path: /usr/lib/dri
+
 microcode_pkg: intel-ucode
 
 ssh_enable_daemon: no
@@ -19,6 +23,7 @@ secure_boot_esp_dir: '/boot/efi_partition'
 secure_boot_out_dir: 'EFI/sbupdate_output'
 
 kde_install_powerdevil: yes
+kde_va_api: va-api
 
 install_tlp: yes
 tlp_is_thinkpad: yes

@@ -123,6 +123,22 @@
   when: microcode_pkg is defined
 
 ##############################################################################
+# Install video acceleration packages
+##############################################################################
+
+- name: Install va-api package
+  package:
+    name: '{{va_api_pkg}}'
+    state: present
+  when: va_api_pkg is defined
+
+- name: Set va-api variables to enable a specific driver
+  template:
+    src: va_api_config.sh.j2
+    dest: /etc/profile.d/va_api_config.sh
+  when: va_api_driver_name is defined and va_api_driver_path is defined
+
+##############################################################################
 # Create the default user and give him the needed permissions
 ##############################################################################
 
