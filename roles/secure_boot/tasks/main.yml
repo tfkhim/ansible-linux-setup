@@ -17,8 +17,8 @@
     dest: '{{item.dest}}'
     mode: u=rw,g=,o=
   with_items:
-    - {src: 'private_data/db.key', dest: '/root/secure-boot/DB.key'}
-    - {src: 'private_data/db.crt', dest: '/root/secure-boot/DB.crt'}
+    - {src: 'private_data/db.key', dest: '/etc/efi-keys/DB.key'}
+    - {src: 'private_data/db.crt', dest: '/etc/efi-keys/DB.crt'}
 
 - name: Install the sbupdate AUR package
   include_role:
@@ -33,12 +33,12 @@
   copy:
     remote_src: yes
     force: no
-    src: /etc/default/sbupdate
-    dest: /etc/default/sbupdate.orig
+    src: /etc/sbupdate.conf
+    dest: /etc/sbupdate.conf.orig
 
 - name: Update sbupdate configuration
   lineinfile:
-    path: /etc/default/sbupdate
+    path: /etc/sbupdate.conf
     regex: '^#?{{item.key}}=.*$'
     line: '{{item.key}}="{{item.value}}"'
   with_items:
