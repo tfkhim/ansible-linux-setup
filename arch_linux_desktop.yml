@@ -13,6 +13,7 @@
     - ssh_agent_users: ['{{username}}']
   roles:
     - common
+    - arch_reflector
     - systemd_ssh_agent
     - networkmanager
     - local_unbound
