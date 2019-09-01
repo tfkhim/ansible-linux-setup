@@ -9,6 +9,8 @@ va_api_driver_path: /usr/lib/dri
 
 microcode_pkg: intel-ucode
 
+install_bluetooth: yes
+
 ssh_enable_daemon: no
 
 nm_install_openvpn: yes
@@ -23,6 +25,7 @@ secure_boot_esp_dir: '/boot/efi_partition'
 secure_boot_out_dir: 'EFI/sbupdate_output'
 
 kde_install_powerdevil: yes
+kde_install_bluedevil: yes
 kde_va_api: va-api
 
 install_tlp: yes

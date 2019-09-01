@@ -6,6 +6,7 @@
 # have received a copy of the MIT License along with this program.
 
 kde_install_powerdevil: no
+kde_install_bluedevil: no
 
 kde_sddm_theme: breeze
 kde_sddm_cursor_theme: breeze_cursors

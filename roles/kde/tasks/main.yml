@@ -54,11 +54,17 @@
     state: present
   when: kde_install_powerdevil
 
-- name: Install powerdevil package
+- name: Install bluedevil package
   package:
-    name: powerdevil
+    name: bluedevil
     state: present
-  when: kde_install_powerdevil
+  when: kde_install_bluedevil
+
+- name: Install pluseaudio bluetooth support
+  package:
+    name: pulseaudio-bluetooth
+    state: present
+  when: install_bluetooth is defined and install_bluetooth
 
 - name: Install va-api support for Phonon
   package:
