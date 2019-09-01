@@ -1,0 +1,70 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2018 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+# See: https://wiki.archlinux.org/index.php/SSH_keys#Start_ssh-agent_with_systemd_user
+
+##############################################################################
+# Configure the user instance of systemd to start ssh-agent
+##############################################################################
+
+- name: Create .config folder
+  become_user: '{{item}}'
+  become: yes
+  file:
+    path: /home/{{item}}/.config
+    state: directory
+  loop: '{{ssh_agent_users}}'
+
+- name: Create systemd folder
+  become_user: '{{item}}'
+  become: yes
+  file:
+    path: /home/{{item}}/.config/systemd
+    state: directory
+  loop: '{{ssh_agent_users}}'
+
+- name: Create user folder
+  become_user: '{{item}}'
+  become: yes
+  file:
+    path: /home/{{item}}/.config/systemd/user
+    state: directory
+  loop: '{{ssh_agent_users}}'
+
+- name: Copy the ssh-agent.service file
+  become_user: '{{item}}'
+  become: yes
+  copy:
+    src: ssh-agent.service
+    dest: /home/{{item}}/.config/systemd/user
+  loop: '{{ssh_agent_users}}'
+
+- name: Enable ssh-agent.service for all users
+  become_user: '{{item}}'
+  become: yes
+  systemd:
+    name: ssh-agent
+    daemon_reload: yes
+    enabled: yes
+    state: started
+    scope: user
+  loop: '{{ssh_agent_users}}'
+
+##############################################################################
+# Configure pam_env so clients can find the started ssh-agent instance
+##############################################################################
+
+- name: Add SSH_AUTH_SOCK variable to ~/.pam_environment
+  become_user: '{{item}}'
+  become: yes
+  lineinfile:
+    path: /home/{{item}}/.pam_environment
+    state: present
+    create: yes
+    regex: '^#?SSH_AUTH_SOCK DEFAULT=.*$'
+    line: 'SSH_AUTH_SOCK DEFAULT="${XDG_RUNTIME_DIR}/ssh-agent.socket"'
+  loop: '{{ssh_agent_users}}'

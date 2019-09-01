@@ -10,8 +10,10 @@
     - vars/private.yml
   vars:
     - firefox_users: ['{{username}}']
+    - ssh_agent_users: ['{{username}}']
   roles:
     - common
+    - systemd_ssh_agent
     - networkmanager
     - local_unbound
     - role: fwupd
