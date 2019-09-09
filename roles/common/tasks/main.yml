@@ -5,6 +5,10 @@
 # This software may be freely distributed under the MIT license. You should
 # have received a copy of the MIT License along with this program.
 
+- name: Include distribution specific variables
+  include_vars:
+    file: '{{ansible_facts.os_family|lower}}.yml'
+
 ##############################################################################
 # Install and configure OpenSSH
 ##############################################################################
@@ -13,7 +17,7 @@
 
 - name: Install OpenSSH package
   package:
-    name: openssh
+    name: '{{openssh_packages}}'
     state: present
 
 - name: Create a backup of sshd_config
@@ -47,33 +51,8 @@
 # Activate OpenSSH in Systemd
 ##############################################################################
 
-# Explicit setting of file permissions doesn't seem necessary. The Arch
-# documentation doesn't mention it for the directory and override file.
-# The default mode is also equivalent to the mode set by systemctl edit.
-#
-# See: https://wiki.archlinux.org/index.php/Systemd#Drop-in_files
-
-- name: Create sshd.socket.d directory containing systemd configuration
-  file:
-    path: /etc/systemd/system/sshd.socket.d
-    state: directory
-    owner: root
-    group: root
-#   mode: u=rwx,g=rx,o=rx
-
-- name: Configure sshd.socket service
-  template:
-    src: sshd_socket_override.conf.j2
-    dest: /etc/systemd/system/sshd.socket.d/override.conf
-    owner: root
-    group: root
-#   mode: u=rw,g=r,o=r
-
-- name: Enable sshd.socket service
-  systemd:
-    daemon_reload: yes
-    name: sshd.socket
-    enabled: '{{ssh_enable_daemon}}'
+- name: Include tasks for enabling automatic start
+  include_tasks: 'openssh_{{ansible_facts.os_family|lower}}.yml'
 
 ##############################################################################
 # Install and configure sudo
@@ -86,12 +65,13 @@
 
 - name: Allow users in 'wheel' group to use sudo
   copy:
-    src: 01_allow_wheel
+    src: '{{sudo_group_file}}'
     dest: /etc/sudoers.d/
     owner: root
     group: root
     mode: u=r,g=r
     validate: /usr/sbin/visudo -csf %s
+  when: sudo_group_file is defined
 
 ##############################################################################
 # Install packages for improved usability
@@ -167,10 +147,10 @@
     password: "{{password}}"
     state: present
 
-- name: Add '{{username}}' to 'wheel' group
+- name: Add '{{username}}' to '{{sudo_group}}' group
   user:
     name: '{{username}}'
-    groups: wheel
+    groups: '{{sudo_group}}'
     append: yes
 
 - name: Add '{{username}}' to 'lp' group

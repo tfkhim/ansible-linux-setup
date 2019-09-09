@@ -1,0 +1,34 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2019 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+# Explicit setting of file permissions doesn't seem necessary. The Arch
+# documentation doesn't mention it for the directory and override file.
+# The default mode is also equivalent to the mode set by systemctl edit.
+#
+# See: https://wiki.archlinux.org/index.php/Systemd#Drop-in_files
+
+- name: Create sshd.socket.d directory containing systemd configuration
+  file:
+    path: /etc/systemd/system/sshd.socket.d
+    state: directory
+    owner: root
+    group: root
+#   mode: u=rwx,g=rx,o=rx
+
+- name: Configure sshd.socket service
+  template:
+    src: sshd_socket_override.conf.j2
+    dest: /etc/systemd/system/sshd.socket.d/override.conf
+    owner: root
+    group: root
+#   mode: u=rw,g=r,o=r
+
+- name: Enable sshd.socket service
+  systemd:
+    daemon_reload: yes
+    name: sshd.socket
+    enabled: '{{ssh_enable_daemon}}'

@@ -1,6 +1,6 @@
 # Private Ansible playbook
 #
-# Copyright (C) 2018 T. Himmelstoss
+# Copyright (C) 2019 T. Himmelstoss
 #
 # This software may be freely distributed under the MIT license. You should
 # have received a copy of the MIT License along with this program.
@@ -9,8 +9,14 @@
   timezone:
     name: '{{timezone}}'
 
+- name: Check if hwclock exists and can be used
+  command: hwclock --test
+  ignore_errors: yes
+  register: hwclock_test
+
 - name: Set the hardware clock to system time
   command: hwclock --systohc
+  when: hwclock_test.rc == 0
 
 - name: Create a backup of locale.gen
   copy:
@@ -39,12 +45,19 @@
   hostname:
     name: '{{install_hostname}}'
 
+- name: Create a backup of hosts file
+  copy:
+    remote_src: yes
+    force: no
+    src: /etc/hosts
+    dest: /etc/hosts.orig
+
 - name: Add required lines to /etc/hosts
   lineinfile:
     path: /etc/hosts
-    line: '{{item}}'
+    regex: '^{{item.ip|trim}}.*$'
+    line: '{{item.ip}}       {{item.names}}'
   with_items:
-    - '127.0.0.1          localhost'
-    - '::1                localhost'
-    - '127.0.1.1          {{install_hostname}}.localdomain         {{install_hostname}}'
-
+    - {ip: '127.0.0.1', names: 'localhost'}
+    - {ip: '::1      ', names: 'localhost ip6-localhost ip6-loopback'}
+    - {ip: '127.0.1.1', names: '{{install_hostname}}.localdomain {{install_hostname}}'}

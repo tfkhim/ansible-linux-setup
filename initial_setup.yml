@@ -1,11 +1,11 @@
 # Private Ansible playbook
 #
-# Copyright (C) 2018 T. Himmelstoss
+# Copyright (C) 2019 T. Himmelstoss
 #
 # This software may be freely distributed under the MIT license. You should
 # have received a copy of the MIT License along with this program.
 
-- hosts: post_chroot_setup
+- hosts: initial_setup
   vars_files:
     - vars/private.yml
   vars_prompt:
@@ -18,7 +18,5 @@
     locales: ['de_DE.UTF-8', 'en_US.UTF-8']
     locale: 'de_DE.UTF-8'
   roles:
-    - arch_linux_post_chroot
+    - initial_setup
     - common
-    - networkmanager
-
