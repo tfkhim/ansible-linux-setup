@@ -28,7 +28,7 @@ kde_install_powerdevil: yes
 kde_install_bluedevil: yes
 kde_va_api: va-api
 
-install_tlp: yes
+install_tlp: no
 tlp_is_thinkpad: yes
 tlp_start_charge: 50
 tlp_stop_charge: 55
