@@ -7,6 +7,5 @@
 
 - name: Install the Ansible package
   package:
-    name: ansible
+    name: [ansible, sshpass]
     state: present
-
