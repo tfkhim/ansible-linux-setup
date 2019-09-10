@@ -1,0 +1,6 @@
+ansible_host: barghest.fritz.box
+ansible_port: '{{sshd_port}}'
+ansible_user: '{{username}}'
+ansible_become: yes
+
+ssh_enable_daemon: yes

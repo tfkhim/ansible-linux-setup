@@ -1,0 +1,12 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2019 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+- hosts: raspian_home_server
+  vars_files:
+    - vars/private.yml
+  roles:
+    - common
