@@ -9,3 +9,5 @@ openssh_packages: [openssh]
 
 sudo_group_file: 01_allow_wheel
 sudo_group: wheel
+
+cryptsetup_packages: [cryptsetup]

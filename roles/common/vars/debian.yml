@@ -8,3 +8,5 @@
 openssh_packages: [openssh-client, openssh-server]
 
 sudo_group: sudo
+
+cryptsetup_packages: [cryptsetup-bin]
