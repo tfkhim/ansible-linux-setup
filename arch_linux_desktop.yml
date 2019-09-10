@@ -11,6 +11,7 @@
   vars:
     - firefox_users: ['{{username}}']
     - ssh_agent_users: ['{{username}}']
+    - syncthing_users: ['{{username}}']
   roles:
     - common
     - arch_reflector
@@ -24,6 +25,6 @@
     - role: ansible_controller
       when: install_ansible is defined and install_ansible
     - kde
+    - syncthing
     - virtualbox
     - desktop_applications
-

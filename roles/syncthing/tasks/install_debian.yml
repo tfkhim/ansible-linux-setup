@@ -1,0 +1,31 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2019 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+# See: https://apt.syncthing.net/
+
+- name: Install the required dependencies
+  apt:
+    name: apt-transport-https
+    state: present
+
+- name: Add the required apt signing key
+  apt_key:
+    id: '{{syncthing_pgp_id}}'
+    url: '{{syncthing_key_url}}'
+    state: present
+
+- name: Add the apt repository containing syncthing packages
+  apt_repository:
+    repo: '{{syncthing_apt_repo}}'
+    state: present
+    filename: syncthing
+    update_cache: yes
+
+- name: Install the syncthing package
+  apt:
+    name: syncthing
+    state: present

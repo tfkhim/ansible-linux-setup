@@ -1,0 +1,17 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2019 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+- name: Activate the syncthing service
+  become_user: '{{item}}'
+  become: yes
+  systemd:
+    name: syncthing
+    daemon_reload: yes
+    enabled: yes
+    state: started
+    scope: user
+  loop: '{{syncthing_users}}'

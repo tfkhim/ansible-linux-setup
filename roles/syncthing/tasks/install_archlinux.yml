@@ -5,9 +5,7 @@
 # This software may be freely distributed under the MIT license. You should
 # have received a copy of the MIT License along with this program.
 
-- hosts: raspian_home_server
-  vars_files:
-    - vars/private.yml
-  roles:
-    - common
-    - syncthing
+- name: Install Syncthing package
+  package:
+    name: syncthing
+    state: present

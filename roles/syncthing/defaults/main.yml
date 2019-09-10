@@ -1,0 +1,15 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2019 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+syncthing_setup_server: no
+
+syncthing_server_user: syncthing
+syncthing_server_group: syncthing
+
+syncthing_pgp_id: '37C84554E7E0A261E4F76E1ED26E6ED000654A3E'
+syncthing_key_url: 'https://syncthing.net/release-key.txt'
+syncthing_apt_repo: 'deb https://apt.syncthing.net/ syncthing stable'
