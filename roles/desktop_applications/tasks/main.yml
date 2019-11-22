@@ -134,7 +134,7 @@
 
 - name: Install TeX Live distribution
   package:
-    name: texlive-core texlive-lang
+    name: [texlive-core, texlive-lang]
     state: present
 
 ##############################################################################
