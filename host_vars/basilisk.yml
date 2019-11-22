@@ -24,6 +24,8 @@ secure_boot_kernel_command_line: 'cryptdevice=UUID=f124b05c-7666-4949-95f4-51948
 secure_boot_esp_dir: '/boot/efi_partition'
 secure_boot_out_dir: 'EFI/sbupdate_output'
 
+unbound_private_domains: ['fritz.box']
+
 kde_install_powerdevil: yes
 kde_install_bluedevil: yes
 kde_va_api: va-api

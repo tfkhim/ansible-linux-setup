@@ -46,8 +46,8 @@
   when: resolvconf.changed
 
 - name: Copy unbound configuration
-  copy:
-    src: unbound.conf
+  template:
+    src: unbound.conf.j2
     dest: /etc/unbound/unbound.conf
     validate: /usr/bin/unbound-checkconf %s
 

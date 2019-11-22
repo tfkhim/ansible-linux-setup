@@ -11,8 +11,10 @@ server:
   unblock-lan-zones: yes
   insecure-lan-zones: yes
 
-  private-domain: "fritz.box"
-  domain-insecure: "fritz.box"
+{% for domain in unbound_private_domains %}
+  private-domain: "{{domain}}"
+  domain-insecure: "{{domain}}"
+{% endfor %}
 
 forward-zone:
   name: "."
