@@ -51,8 +51,10 @@
 # Activate OpenSSH in Systemd
 ##############################################################################
 
-- name: Include tasks for enabling automatic start
-  include_tasks: 'openssh_{{ansible_facts.os_family|lower}}.yml'
+- name: Restart sshd service
+  service:
+    name: '{{openssh_service}}'
+    enabled: '{{ssh_enable_daemon}}'
 
 ##############################################################################
 # Install and configure sudo

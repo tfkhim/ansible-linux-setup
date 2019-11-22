@@ -6,6 +6,7 @@
 # have received a copy of the MIT License along with this program.
 
 openssh_packages: [openssh]
+openssh_service: sshd
 
 sudo_group_file: 01_allow_wheel
 sudo_group: wheel
