@@ -12,6 +12,7 @@
     - firefox_users: ['{{username}}']
     - ssh_agent_users: ['{{username}}']
     - syncthing_users: ['{{username}}']
+    - sane_frontends: [skanlite, gscan2pdf]
   roles:
     - common
     - arch_reflector

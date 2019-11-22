@@ -169,3 +169,18 @@
     name: org.cups.cupsd
     enabled: yes
     state: started
+
+##############################################################################
+# Install SANE
+##############################################################################
+
+- name: Install SANE package
+  package:
+    name: sane
+    state: present
+
+- name: Install SANE frontend package
+  package:
+    name: '{{sane_frontends}}'
+    state: present
+  when: sane_frontends is defined
