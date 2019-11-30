@@ -1,9 +1,0 @@
-ansible_host: barghest.fritz.box
-ansible_port: '{{sshd_port}}'
-ansible_user: '{{username}}'
-ansible_become: yes
-
-ssh_enable_daemon: yes
-
-syncthing_setup_server: yes
-syncthing_folder_root_dir: /volumes/volume1/syncthing

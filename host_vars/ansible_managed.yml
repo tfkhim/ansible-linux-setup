@@ -1,5 +1,0 @@
-ansible_host: 127.0.0.1
-ansible_port: '{{sshd_port}}'
-ansible_user: '{{username}}'
-ansible_become: yes
-

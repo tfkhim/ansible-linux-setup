@@ -6,8 +6,6 @@
 # have received a copy of the MIT License along with this program.
 
 - hosts: raspian_home_server
-  vars_files:
-    - vars/private.yml
   roles:
     - common
     - syncthing
