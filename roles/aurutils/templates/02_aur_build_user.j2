@@ -1,0 +1,4 @@
+## Allow the AUR build user to use arch-nspawn and pacman without password
+{{aur_build_user}} ALL=(ALL) NOPASSWD: /usr/bin/arch-nspawn
+{{aur_build_user}} ALL=(ALL) NOPASSWD:SETENV: /usr/bin/makechrootpkg
+{{aur_build_user}} ALL=(ALL) NOPASSWD: /usr/bin/pacman

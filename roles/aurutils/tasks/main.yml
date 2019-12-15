@@ -1,0 +1,157 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2018 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+##############################################################################
+# Prepare makepkg
+##############################################################################
+
+- name: Install required packages for makepkg
+  package:
+    name: [base-devel, git]
+    state: present
+
+- name: Add user '{{aur_build_user}}' for building AUR packages
+  user:
+    name: '{{aur_build_user}}'
+    state: present
+
+- name: Allow user '{{aur_build_user}}' to call required utilities without password
+  template:
+    src: 02_aur_build_user.j2
+    dest: /etc/sudoers.d/02_aur_build_user
+    owner: root
+    group: root
+    mode: u=r,g=r
+    validate: /usr/sbin/visudo -csf %s
+
+##############################################################################
+# Create local package repository
+##############################################################################
+
+- name: Create a directory for custom repositories
+  become_user: '{{aur_build_user}}'
+  become: yes
+  file:
+    path: '{{aur_build_dir}}/repository'
+    state: directory
+  loop:
+    - '{{aur_build_dir}}/repository'
+
+- name: Create a backup of pacman.conf
+  copy:
+    remote_src: yes
+    force: no
+    src: /etc/pacman.conf
+    dest: /etc/pacman.conf.orig
+
+- name: Add custom repository lines to pacman.conf
+  blockinfile:
+    path: /etc/pacman.conf
+    block: |
+      [{{item.name}}]
+      SigLevel = Optional TrustAll
+      Server = {{item.server}}
+  loop:
+    - { name: '{{aur_build_user}}', server: 'file://{{aur_build_dir}}/repository' }
+
+- name: Uncomment default cache dir
+  lineinfile:
+    path: /etc/pacman.conf
+    backrefs: yes
+    regex: '^#.*CacheDir (.*)$'
+    line: 'CacheDir \1'
+
+- name: Add custom repositories after default cache dir
+  lineinfile:
+    path: /etc/pacman.conf
+    insertafter: '^CacheDir'
+    line: 'CacheDir = {{item.server}}'
+  loop:
+    - { name: '{{aur_build_user}}', server: '{{aur_build_dir}}/repository' }
+
+- name: Set CleanMethod to KeepCurrent
+  lineinfile:
+    path: /etc/pacman.conf
+    regex: '^#?CleanMethod.*$'
+    line: 'CleanMethod = KeepCurrent'
+
+- name: Initialize repositories
+  become_user: '{{aur_build_user}}'
+  become: yes
+  command: repo-add '{{item.server}}/{{item.name}}.db.tar'
+  loop:
+    - { name: '{{aur_build_user}}', server: '{{aur_build_dir}}/repository' }
+
+##############################################################################
+# Build aurutils package
+##############################################################################
+
+- name: Copy maintainer signing key
+  become_user: '{{aur_build_user}}'
+  become: yes
+  copy:
+    src: DBE7D3DD8C81D58D0A13D0E76BC26A17B9B7018A.key
+    dest: '{{aur_build_dir}}'
+
+- name: Import maintainer signing key
+  become_user: '{{aur_build_user}}'
+  become: yes
+  command: gpg --import {{aur_build_dir}}/DBE7D3DD8C81D58D0A13D0E76BC26A17B9B7018A.key
+
+- name: Clone the Git repository
+  become_user: '{{aur_build_user}}'
+  become: yes
+  git:
+    repo: 'https://aur.archlinux.org/aurutils.git'
+    dest: '{{aur_build_dir}}/aurutils'
+    force: yes
+    version: '{{git_version}}'
+
+- name: Install dependencies
+  package:
+    name:
+      - jq
+      - expac
+      - diffstat
+      - pacutils
+      - parallel
+      - wget
+      - bash-completion
+      - devtools
+      - vifm
+    state: present
+    update_cache: yes
+    extra_args: '--asdeps'
+
+- name: Build the package
+  become_user: '{{aur_build_user}}'
+  become: yes
+  command: makepkg --force --rmdeps --cleanbuild
+  args:
+    chdir: '{{aur_build_dir}}/aurutils'
+
+##############################################################################
+# Install aurutils package
+##############################################################################
+
+- name: Copy package into custom repository
+  become_user: '{{aur_build_user}}'
+  become: yes
+  shell: 'cp -f "{{aur_build_dir}}/aurutils/"*.pkg.tar.xz "{{aur_build_dir}}/repository"'
+
+- name: Add package to custom repository database
+  become_user: '{{aur_build_user}}'
+  become: yes
+  shell: 'repo-add -n "{{aur_build_user}}.db.tar" ./*.pkg.tar.xz'
+  args:
+    chdir: '{{aur_build_dir}}/repository'
+
+- name: Install package
+  pacman:
+    name: aurutils
+    state: present
+    update_cache: yes
