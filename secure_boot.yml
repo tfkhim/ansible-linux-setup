@@ -6,7 +6,5 @@
 # have received a copy of the MIT License along with this program.
 
 - hosts: arch_linux_desktop
-  vars_files:
-    - vars/private.yml
   roles:
     - secure_boot

@@ -20,14 +20,16 @@
     - {src: 'private_data/db.key', dest: '/etc/efi-keys/DB.key'}
     - {src: 'private_data/db.crt', dest: '/etc/efi-keys/DB.crt'}
 
-- name: Install the sbupdate AUR package
-  include_role:
-    name: aur_package
-  vars:
-    aur_build_user: aur_builder
-    package_name: sbupdate-git
-    git_version: master
-    aur_build_dir: /home/aur_builder/aur
+- name: Build AUR package
+  become_user: '{{aur_build_user}}'
+  become: yes
+  command: aur sync sbupdate-git
+
+- name: Install AUR package with pacman
+  pacman:
+    name: sbupdate-git
+    state: present
+    update_cache: yes
 
 - name: Create a backup of sbupdate configuration
   copy:
