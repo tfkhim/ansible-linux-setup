@@ -8,3 +8,4 @@
 aur_build_user: aur_builder
 aur_build_dir: /home/{{aur_build_user}}
 git_version: 87e41e4154d63c3f2aa75004d865be096a7d6b99
+aurutils_version: 2.3.3-1

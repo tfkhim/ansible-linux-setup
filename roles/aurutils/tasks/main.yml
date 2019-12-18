@@ -83,6 +83,8 @@
   become_user: '{{aur_build_user}}'
   become: yes
   command: repo-add '{{item.server}}/{{item.name}}.db.tar'
+  args:
+    creates: '{{item.server}}/{{item.name}}.db.tar'
   loop:
     - { name: '{{aur_build_user}}', server: '{{aur_build_dir}}/repository' }
 
@@ -97,10 +99,17 @@
     src: DBE7D3DD8C81D58D0A13D0E76BC26A17B9B7018A.key
     dest: '{{aur_build_dir}}'
 
+- name: Check if maintainer key already present
+  become_user: '{{aur_build_user}}'
+  become: yes
+  command: gpg --list-keys
+  register: gpg_list_keys
+
 - name: Import maintainer signing key
   become_user: '{{aur_build_user}}'
   become: yes
   command: gpg --import {{aur_build_dir}}/DBE7D3DD8C81D58D0A13D0E76BC26A17B9B7018A.key
+  when: "'DBE7D3DD8C81D58D0A13D0E76BC26A17B9B7018A' not in gpg_list_keys.stdout"
 
 - name: Clone the Git repository
   become_user: '{{aur_build_user}}'
@@ -133,20 +142,23 @@
   command: makepkg --force --rmdeps --cleanbuild
   args:
     chdir: '{{aur_build_dir}}/aurutils'
+    creates: '{{aur_build_dir}}/aurutils/aurutils-{{aurutils_version}}-any.pkg.tar.xz'
 
 ##############################################################################
 # Install aurutils package
 ##############################################################################
 
 - name: Copy package into custom repository
-  become_user: '{{aur_build_user}}'
-  become: yes
-  shell: 'cp -f "{{aur_build_dir}}/aurutils/"*.pkg.tar.xz "{{aur_build_dir}}/repository"'
+  copy:
+    remote_src: yes
+    force: no
+    src: '{{aur_build_dir}}/aurutils/aurutils-{{aurutils_version}}-any.pkg.tar.xz'
+    dest: '{{aur_build_dir}}/repository'
 
 - name: Add package to custom repository database
   become_user: '{{aur_build_user}}'
   become: yes
-  shell: 'repo-add -n "{{aur_build_user}}.db.tar" ./*.pkg.tar.xz'
+  command: repo-add -n "{{aur_build_user}}.db.tar" "{{aur_build_dir}}/repository/aurutils-{{aurutils_version}}-any.pkg.tar.xz"
   args:
     chdir: '{{aur_build_dir}}/repository'
 
