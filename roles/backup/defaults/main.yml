@@ -10,3 +10,5 @@ backup_group: borgbackup
 backup_user_groups: []
 
 rclone_sync_tasks: []
+
+borgbackup_tasks: []

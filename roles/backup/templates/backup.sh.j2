@@ -12,3 +12,7 @@ RCLONE_CONFIG={{rclone_conf}}
 {% for task in rclone_sync_tasks %}
 rclone --verbose --config=${RCLONE_CONFIG} sync {{task.source}} {{task.target}}
 {% endfor %}
+
+{% for task in borgbackup_tasks %}
+borgbackup --verbose create {{task.repo}}::'{hostname}-{now}' {{task.path}}
+{% endfor %}
