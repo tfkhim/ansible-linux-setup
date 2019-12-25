@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # Private Ansible playbook
 #
 # Copyright (C) 2019 T. Himmelstoss
@@ -5,8 +7,8 @@
 # This software may be freely distributed under the MIT license. You should
 # have received a copy of the MIT License along with this program.
 
-- hosts: raspian_home_server
-  roles:
-    - common
-    - syncthing
-    - backup
+RCLONE_CONFIG={{rclone_conf}}
+
+{% for task in rclone_sync_tasks %}
+rclone --verbose --config=${RCLONE_CONFIG} sync {{task.source}} {{task.target}}
+{% endfor %}

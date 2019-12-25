@@ -1,0 +1,66 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2019 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+- name: Install packages
+  package:
+    name: [rclone, borgbackup]
+    state: present
+
+- name: Ensure group '{{backup_user}}' exists
+  group:
+    name: '{{backup_user}}'
+    state: present
+
+- name: Ensure user '{{backup_user}}' exists
+  user:
+    name: '{{backup_user}}'
+    group: '{{backup_user}}'
+    groups: '{{backup_user_groups}}'
+    append: yes
+    state: present
+
+- name: Create the root folder for backup related content
+  file:
+    path: '{{backup_root_dir}}'
+    state: directory
+    owner: '{{backup_user}}'
+    group: '{{backup_group}}'
+    mode: 'u=rwx,g=rx,o='
+
+- name: Copy Rclone config file
+  copy:
+    src: '{{rclone_conf_src}}'
+    dest: '{{backup_root_dir}}/rclone.conf'
+    owner: '{{backup_user}}'
+    group: '{{backup_user}}'
+    mode: u=r,g=,o=
+
+- name: Create the backup script from template file
+  template:
+    src: backup.sh.j2
+    dest: '{{backup_root_dir}}/backup.sh'
+    owner: '{{backup_user}}'
+    group: '{{backup_user}}'
+    mode: u=rx,g=rx,o=
+  vars:
+    rclone_conf: '{{backup_root_dir}}/rclone.conf'
+
+- name: Create a Systemd unit file for triggering the backup
+  template:
+    src: personal-backup.service.j2
+    dest: /etc/systemd/system/personal-backup.service
+
+- name: Create a Systemd unit file for triggering the backup
+  copy:
+    src: personal-backup.timer
+    dest: /etc/systemd/system
+
+- name: Enable systemd timer
+  service:
+    name: personal-backup.timer
+    enabled: yes
+    state: started
