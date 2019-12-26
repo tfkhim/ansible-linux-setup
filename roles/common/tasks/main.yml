@@ -27,23 +27,15 @@
     src: /etc/ssh/sshd_config
     dest: /etc/ssh/sshd_config.orig
 
-- name: Set the SSH port
+- name: Update SSH configuration
   lineinfile:
     path: /etc/ssh/sshd_config
-    insertafter: '^#Port '
-    line: 'Port {{sshd_port}}'
-
-- name: Prohibit root login
-  lineinfile:
-    path: /etc/ssh/sshd_config
-    insertafter: '^#PermitRootLogin '
-    line: 'PermitRootLogin no'
-
-- name: Prohibit password authentication
-  lineinfile:
-    path: /etc/ssh/sshd_config
-    insertafter: '^#PasswordAuthentication '
-    line: 'PasswordAuthentication no'
+    regex: '^#?{{item.key}} .*$'
+    line: '{{item.key}} {{item.value}}'
+  with_items:
+    - {key: Port,                   value: '{{sshd_port}}'}
+    - {key: PermitRootLogin,        value: 'no'}
+    - {key: PasswordAuthentication, value: 'no'}
 
 #TODO: Apply SSH hardening
 
