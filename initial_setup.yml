@@ -6,8 +6,6 @@
 # have received a copy of the MIT License along with this program.
 
 - hosts: initial_setup
-  vars_files:
-    - vars/private.yml
   vars_prompt:
     - name: install_hostname
       prompt: The hostname to set
