@@ -17,7 +17,8 @@
     - aurutils
     - systemd_ssh_agent
     - networkmanager
-    - local_unbound
+    - role: local_unbound
+      when: install_unbound is defined and install_unbound
     - role: fwupd
       when: install_fwupd is defined and install_fwupd
     - role: tlp
@@ -26,5 +27,7 @@
       when: install_ansible is defined and install_ansible
     - kde
     - syncthing
-    - virtualbox
-    - desktop_applications
+    - role: virtualbox
+      when: install_vbox is defined and install_vbox
+    - role: desktop_applications
+      when: install_applications is defined and install_applications
