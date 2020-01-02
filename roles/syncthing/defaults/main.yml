@@ -13,3 +13,8 @@ syncthing_server_group: syncthing
 syncthing_pgp_id: '37C84554E7E0A261E4F76E1ED26E6ED000654A3E'
 syncthing_key_url: 'https://syncthing.net/release-key.txt'
 syncthing_apt_repo: 'deb https://apt.syncthing.net/ syncthing stable'
+
+syncthing_config_files:
+  - {src: '{{inventory_hostname}}_key.pem', dest: key.pem, mode: 'u=rw,g=,o='}
+  - {src: '{{inventory_hostname}}_cert.pem', dest: cert.pem, mode: 'u=rw,g=r,o=r'}
+  - {src: '{{inventory_hostname}}_config.xml', dest: config.xml, mode: 'u=rw,g=,o='}

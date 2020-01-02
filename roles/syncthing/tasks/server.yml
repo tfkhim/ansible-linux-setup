@@ -16,14 +16,44 @@
     group: '{{syncthing_server_group}}'
     state: present
 
-- name: Create the root folder containing all synchronized folders
+- name: Create .config folder
   file:
-    path: '{{syncthing_folder_root_dir}}'
+    path: '/home/{{syncthing_server_user}}/.config'
+    state: directory
+    owner: '{{syncthing_server_user}}'
+    group: '{{syncthing_server_group}}'
+    mode: 'u=rwx,g=,o='
+
+- name: Create the root folder structure synchronized folders and configuration
+  file:
+    path: '{{item}}'
     state: directory
     owner: '{{syncthing_server_user}}'
     group: '{{syncthing_server_group}}'
     mode: 'u=rwx,g=rx,o='
+  with_items:
+    - '{{syncthing_folder_root_dir}}'
+    - '{{syncthing_folder_root_dir}}/.config'
   when: syncthing_folder_root_dir is defined
+
+- name: Create a symbolic link for the configuration folder
+  file:
+    src: '{{syncthing_folder_root_dir}}/.config'
+    dest: '/home/{{syncthing_server_user}}/.config/syncthing'
+    owner: '{{syncthing_server_user}}'
+    group: '{{syncthing_server_group}}'
+    state: link
+  when: syncthing_folder_root_dir is defined
+
+- name: Copy configuration files
+  copy:
+    src: '{{syncthing_files_dir}}/{{item.src}}'
+    dest: '{{syncthing_folder_root_dir}}/.config/{{item.dest}}'
+    owner: '{{syncthing_server_user}}'
+    group: '{{syncthing_server_group}}'
+    mode: '{{item.mode}}'
+  with_items: '{{syncthing_config_files}}'
+  when: syncthing_files_dir is defined
 
 - name: Enable Syncthing service for the user
   service:

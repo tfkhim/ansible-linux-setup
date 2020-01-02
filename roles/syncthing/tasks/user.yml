@@ -5,6 +5,15 @@
 # This software may be freely distributed under the MIT license. You should
 # have received a copy of the MIT License along with this program.
 
+- name: Copy configuration files
+  become_user: '{{item[1]}}'
+  copy:
+    src: '{{syncthing_files_dir}}/{{item[0].src}}'
+    dest: '/home/{{item[1]}}/.config/syncthing/{{item[0].dest}}'
+    mode: '{{item[0].mode}}'
+  loop: '{{ syncthing_config_files | product(syncthing_users) | list}}'
+  when: syncthing_files_dir is defined
+
 - name: Activate the syncthing service
   become_user: '{{item}}'
   become: yes
