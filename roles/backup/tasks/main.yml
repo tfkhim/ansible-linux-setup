@@ -39,15 +39,24 @@
     group: '{{backup_user}}'
     mode: u=r,g=,o=
 
+- name: Copy SSH private key
+  copy:
+    src: '{{borgbackup_ssh_key}}'
+    dest: '{{backup_root_dir}}/id_ed25519_borgbackup'
+    owner: '{{backup_user}}'
+    group: '{{backup_user}}'
+    mode: u=r,g=,o=
+
 - name: Create the backup script from template file
   template:
     src: backup.sh.j2
     dest: '{{backup_root_dir}}/backup.sh'
     owner: '{{backup_user}}'
     group: '{{backup_user}}'
-    mode: u=rx,g=rx,o=
+    mode: u=rx,g=,o=
   vars:
     rclone_conf: '{{backup_root_dir}}/rclone.conf'
+    ssh_key: '{{backup_root_dir}}/id_ed25519_borgbackup'
 
 - name: Create a Systemd unit file for triggering the backup
   template:

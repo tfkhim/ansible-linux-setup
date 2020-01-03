@@ -13,6 +13,10 @@ RCLONE_CONFIG={{rclone_conf}}
 rclone --verbose --config=${RCLONE_CONFIG} sync {{task.source}} {{task.target}}
 {% endfor %}
 
+export BORG_RSH='ssh -i {{ssh_key}}'
+
 {% for task in borgbackup_tasks %}
+export BORG_PASSPHRASE='{{task.password}}'
 borgbackup --verbose create {{task.repo}}::'{hostname}-{now}' {{task.path}}
+
 {% endfor %}
