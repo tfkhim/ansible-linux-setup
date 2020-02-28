@@ -76,18 +76,39 @@
     src: '{{backup_config}}'
     dest: '{{backup_root_dir}}/backup.conf'
 
+- name: Install backup maintenance configuration file
+  copy:
+    src: '{{backup_maintenance_config}}'
+    dest: '{{backup_root_dir}}/maintenance.conf'
+
 - name: Create a Systemd unit file for triggering the backup
   template:
     src: personal-backup.service.j2
     dest: /etc/systemd/system/personal-backup.service
+
+- name: Create a Systemd unit file for triggering the maintenance tasks
+  template:
+    src: personal-backup-maintenance.service.j2
+    dest: /etc/systemd/system/personal-backup-maintenance.service
 
 - name: Create a Systemd unit file for triggering the backup
   copy:
     src: personal-backup.timer
     dest: /etc/systemd/system
 
+- name: Create a Systemd timer file for triggering the maintenance service
+  copy:
+    src: personal-backup-maintenance.timer
+    dest: /etc/systemd/system
+
 - name: Enable systemd timer
   service:
     name: personal-backup.timer
+    enabled: yes
+    state: started
+
+- name: Enable systemd timer for maintenance tasks
+  service:
+    name: personal-backup-maintenance.timer
     enabled: yes
     state: started
