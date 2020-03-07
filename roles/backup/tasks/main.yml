@@ -60,6 +60,14 @@
     group: '{{backup_user}}'
     mode: u=rw,g=,o=
 
+- name: Copy known_hosts file
+  copy:
+    src: '{{borgbackup_known_hosts}}'
+    dest: '{{backup_root_dir}}/.ssh/known_hosts'
+    owner: '{{backup_user}}'
+    group: '{{backup_user}}'
+    mode: u=rw,g=r,o=r
+
 # We inherit site packages because this ensures we get the
 # lxml module provided by the system package.
 - name: Install auto-backup Python module
