@@ -22,6 +22,7 @@
 - name: Ensure user '{{backup_user}}' exists
   user:
     name: '{{backup_user}}'
+    home: '{{backup_root_dir}}'
     group: '{{backup_user}}'
     groups: '{{backup_user_groups}}'
     append: yes
@@ -43,13 +44,21 @@
     group: '{{backup_user}}'
     mode: u=r,g=,o=
 
+- name: Create .ssh directory
+  file:
+    path: '{{backup_root_dir}}/.ssh'
+    state: directory
+    owner: '{{backup_user}}'
+    group: '{{backup_group}}'
+    mode: u=rwx,g=,o=
+
 - name: Copy SSH private key
   copy:
     src: '{{borgbackup_ssh_key}}'
-    dest: '{{backup_root_dir}}/id_ed25519_borgbackup'
+    dest: '{{backup_root_dir}}/.ssh/id_ed25519'
     owner: '{{backup_user}}'
     group: '{{backup_user}}'
-    mode: u=r,g=,o=
+    mode: u=rw,g=,o=
 
 # We inherit site packages because this ensures we get the
 # lxml module provided by the system package.
