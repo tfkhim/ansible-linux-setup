@@ -76,11 +76,6 @@
     src: '{{backup_config}}'
     dest: '{{backup_root_dir}}/backup.conf'
 
-- name: Install backup maintenance configuration file
-  copy:
-    src: '{{backup_maintenance_config}}'
-    dest: '{{backup_root_dir}}/maintenance.conf'
-
 - name: Create a Systemd unit file for triggering the backup
   template:
     src: personal-backup.service.j2
