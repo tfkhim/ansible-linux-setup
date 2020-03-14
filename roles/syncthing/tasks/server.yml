@@ -13,18 +13,11 @@
 - name: Ensure user '{{syncthing_server_user}}' exists
   user:
     name: '{{syncthing_server_user}}'
+    home: '{{syncthing_folder_root_dir}}'
     group: '{{syncthing_server_group}}'
     state: present
 
-- name: Create .config folder
-  file:
-    path: '/home/{{syncthing_server_user}}/.config'
-    state: directory
-    owner: '{{syncthing_server_user}}'
-    group: '{{syncthing_server_group}}'
-    mode: 'u=rwx,g=,o='
-
-- name: Create the root folder structure synchronized folders and configuration
+- name: Create the root folder
   file:
     path: '{{item}}'
     state: directory
@@ -33,22 +26,24 @@
     mode: 'u=rwx,g=rx,o='
   with_items:
     - '{{syncthing_folder_root_dir}}'
-    - '{{syncthing_folder_root_dir}}/.config'
   when: syncthing_folder_root_dir is defined
 
-- name: Create a symbolic link for the configuration folder
+- name: Create configuration folder structure
   file:
-    src: '{{syncthing_folder_root_dir}}/.config'
-    dest: '/home/{{syncthing_server_user}}/.config/syncthing'
+    path: '{{item}}'
+    state: directory
     owner: '{{syncthing_server_user}}'
     group: '{{syncthing_server_group}}'
-    state: link
+    mode: 'u=rwx,g=,o='
+  with_items:
+    - '{{syncthing_folder_root_dir}}/.config'
+    - '{{syncthing_folder_root_dir}}/.config/syncthing'
   when: syncthing_folder_root_dir is defined
 
 - name: Copy configuration files
   copy:
     src: '{{syncthing_files_dir}}/{{item.src}}'
-    dest: '{{syncthing_folder_root_dir}}/.config/{{item.dest}}'
+    dest: '{{syncthing_folder_root_dir}}/.config/syncthing/{{item.dest}}'
     owner: '{{syncthing_server_user}}'
     group: '{{syncthing_server_group}}'
     mode: '{{item.mode}}'
