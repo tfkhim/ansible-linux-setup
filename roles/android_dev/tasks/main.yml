@@ -1,0 +1,23 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2020 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+# python3-lxml is a dependency of aioxmpp. We use the system package
+# because then it fits to the system libxml2 dependency. python-setuptools,
+# python-virtualenv and git are dependencies for the pip task below.
+
+# See: https://wiki.archlinux.org/index.php/Android_Debug_Bridge
+# The udev rules package is required to ensure adb has the required permissions
+
+- name: Install required packages. 
+  package:
+    name: ['flatpak', 'android-udev']
+    state: present
+
+- name: Install Android Studio flatpak version
+  flatpak:
+    name:  com.google.AndroidStudio
+    state: present

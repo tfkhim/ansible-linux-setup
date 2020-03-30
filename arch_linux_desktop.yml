@@ -11,6 +11,7 @@
     - ssh_agent_users: ['{{username}}']
     - syncthing_users: ['{{username}}']
     - sane_frontends: [skanlite, gscan2pdf]
+    - android_dev_user: '{{username}}'
   roles:
     - common
     - arch_reflector
@@ -31,3 +32,5 @@
       when: install_vbox is defined and install_vbox
     - role: desktop_applications
       when: install_applications is defined and install_applications
+    - role: android_dev
+      when: install_android_dev is defined and install_android_dev
