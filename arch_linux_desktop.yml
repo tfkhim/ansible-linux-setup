@@ -29,7 +29,8 @@
     - role: ansible_controller
       when: install_ansible is defined and install_ansible
     - kde
-    - syncthing
+    - role: syncthing
+      when: install_syncthing is defined and install_syncthing
     - role: virtualbox
       when: install_vbox is defined and install_vbox
     - role: desktop_applications
