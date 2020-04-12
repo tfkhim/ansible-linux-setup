@@ -8,7 +8,7 @@
 - name: Copy configuration files
   become_user: '{{item[1]}}'
   copy:
-    src: '{{syncthing_files_dir}}/{{item[0].src}}'
+    src: '{{syncthing_files_dir}}/{{item[1]}}_{{item[0].src}}'
     dest: '/home/{{item[1]}}/.config/syncthing/{{item[0].dest}}'
     mode: '{{item[0].mode}}'
   loop: '{{ syncthing_config_files | product(syncthing_users) | list}}'
