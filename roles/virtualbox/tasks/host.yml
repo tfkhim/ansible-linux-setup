@@ -1,0 +1,22 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2020 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+##############################################################################
+# Install and configure VirtualBox host
+##############################################################################
+
+- name: Install the VirtualBox packages
+  package:
+    name: [virtualbox, virtualbox-host-modules-arch, virtualbox-guest-iso]
+    state: present
+
+- name: Add users to 'vboxusers' group
+  user:
+    name: '{{item}}'
+    groups: vboxusers
+    append: yes
+  with_items: '{{vbox_allowed_users}}'
