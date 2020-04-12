@@ -12,3 +12,7 @@
 - name: Include tasks for setting up a VirtualBox host
   include_tasks: 'host.yml'
   when: vbox_role == "host"
+
+- name: Include tasks for setting up a VirtualBox guest
+  include_tasks: 'guest.yml'
+  when: vbox_role == "guest"

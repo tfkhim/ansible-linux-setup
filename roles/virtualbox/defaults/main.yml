@@ -7,4 +7,4 @@
 
 vbox_role: host
 vbox_allowed_users: []
-
+vbox_sf_users: []
