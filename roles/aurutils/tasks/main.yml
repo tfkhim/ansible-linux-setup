@@ -142,7 +142,7 @@
   command: makepkg --force --rmdeps --cleanbuild
   args:
     chdir: '{{aur_build_dir}}/aurutils'
-    creates: '{{aur_build_dir}}/aurutils/aurutils-{{aurutils_version}}-any.pkg.tar.xz'
+    creates: '{{aur_build_dir}}/aurutils/aurutils-{{aurutils_version}}-any.pkg.tar.zst'
 
 ##############################################################################
 # Install aurutils package
@@ -152,13 +152,13 @@
   copy:
     remote_src: yes
     force: no
-    src: '{{aur_build_dir}}/aurutils/aurutils-{{aurutils_version}}-any.pkg.tar.xz'
+    src: '{{aur_build_dir}}/aurutils/aurutils-{{aurutils_version}}-any.pkg.tar.zst'
     dest: '{{aur_build_dir}}/repository'
 
 - name: Add package to custom repository database
   become_user: '{{aur_build_user}}'
   become: yes
-  command: repo-add -n "{{aur_build_user}}.db.tar" "{{aur_build_dir}}/repository/aurutils-{{aurutils_version}}-any.pkg.tar.xz"
+  command: repo-add -n "{{aur_build_user}}.db.tar" "{{aur_build_dir}}/repository/aurutils-{{aurutils_version}}-any.pkg.tar.zst"
   args:
     chdir: '{{aur_build_dir}}/repository'
 

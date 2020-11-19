@@ -7,5 +7,5 @@
 
 aur_build_user: aur_builder
 aur_build_dir: /home/{{aur_build_user}}
-git_version: 87e41e4154d63c3f2aa75004d865be096a7d6b99
-aurutils_version: 2.3.3-1
+git_version: a03e794cd0dcbfad1cd4e4e8fbf6220d6a3bbcfd
+aurutils_version: 3.1.2-1
