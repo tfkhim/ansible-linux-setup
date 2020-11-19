@@ -33,6 +33,8 @@
       when: install_syncthing is defined and install_syncthing
     - role: virtualbox
       when: install_vbox is defined and install_vbox
+    - role: qemu
+      when: install_qemu is defined and install_qemu
     - role: desktop_applications
       when: install_applications is defined and install_applications
     - role: android_dev

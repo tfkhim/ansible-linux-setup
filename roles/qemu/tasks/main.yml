@@ -1,0 +1,15 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2020 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+##############################################################################
+# Install and configure VirtualBox
+##############################################################################
+
+- name: Install the Qemu packages
+  package:
+    name: [qemu, libvirt, gnome-boxes]
+    state: present
