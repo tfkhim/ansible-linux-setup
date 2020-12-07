@@ -7,4 +7,4 @@ After=network-online.target
 Type=simple
 User={{backup_user}}
 Group={{backup_group}}
-ExecStart={{backup_root_dir}}/backup-venv/bin/python3 -m auto-backup --tag maintenance {{backup_root_dir}}/backup.conf
+ExecStart={{backup_root_dir}}/backup-venv/bin/autobkp --tag maintenance {{backup_root_dir}}/backup.conf

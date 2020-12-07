@@ -14,16 +14,16 @@
     name: [rclone, borgbackup, python-setuptools, python-virtualenv, python3-lxml, git]
     state: present
 
-- name: Ensure group '{{backup_user}}' exists
+- name: Ensure group '{{backup_group}}' exists
   group:
-    name: '{{backup_user}}'
+    name: '{{backup_group}}'
     state: present
 
 - name: Ensure user '{{backup_user}}' exists
   user:
     name: '{{backup_user}}'
     home: '{{backup_root_dir}}'
-    group: '{{backup_user}}'
+    group: '{{backup_group}}'
     groups: '{{backup_user_groups}}'
     append: yes
     state: present
@@ -41,7 +41,7 @@
     src: '{{rclone_conf_src}}'
     dest: '{{backup_root_dir}}/rclone.conf'
     owner: '{{backup_user}}'
-    group: '{{backup_user}}'
+    group: '{{backup_group}}'
     mode: u=r,g=,o=
 
 - name: Create .ssh directory
@@ -57,7 +57,7 @@
     src: '{{borgbackup_ssh_key}}'
     dest: '{{backup_root_dir}}/.ssh/id_ed25519'
     owner: '{{backup_user}}'
-    group: '{{backup_user}}'
+    group: '{{backup_group}}'
     mode: u=rw,g=,o=
 
 - name: Copy known_hosts file
@@ -65,33 +65,33 @@
     src: '{{borgbackup_known_hosts}}'
     dest: '{{backup_root_dir}}/.ssh/known_hosts'
     owner: '{{backup_user}}'
-    group: '{{backup_user}}'
-    mode: u=rw,g=r,o=r
+    group: '{{backup_group}}'
+    mode: u=rw,g=,o=
 
 # We inherit site packages because this ensures we get the
 # lxml module provided by the system package.
 - name: Install auto-backup Python module
+  become_user: '{{backup_user}}'
+  become: yes
   pip:
     name:
-      - aioxmpp==0.10.5
-      - toml==0.10.0
       - git+https://github.com/tfkhim/auto-backup.git
     virtualenv: '{{backup_root_dir}}/backup-venv'
     virtualenv_python: python3
     virtualenv_site_packages: yes
-
-- name: Change owner of virtual environment
-  file:
-    path: '{{backup_root_dir}}/backup-venv'
-    owner: '{{backup_user}}'
-    group: '{{backup_user}}'
-    mode: 'o='
-    recurse: yes
+  vars:
+    # Pipelining is required due to connecting as an
+    # unprivileged user and becoming an unpriviliged user
+    # at the same time.
+    ansible_ssh_pipelining: yes
 
 - name: Install backup configuration file
   copy:
     src: '{{backup_config}}'
     dest: '{{backup_root_dir}}/backup.conf'
+    owner: '{{backup_user}}'
+    group: '{{backup_user}}'
+    mode: u=rw,g=,o=
 
 - name: Create a Systemd unit file for triggering the backup
   template:
