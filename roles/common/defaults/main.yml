@@ -6,3 +6,5 @@
 # have received a copy of the MIT License along with this program.
 
 ssh_enable_daemon: yes
+
+slaac_mode: private
