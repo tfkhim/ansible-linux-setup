@@ -161,7 +161,7 @@
 
 - name: Enable the CUPS service
   service:
-    name: org.cups.cupsd
+    name: cups
     enabled: yes
     state: started
 
