@@ -18,6 +18,7 @@
     - common
     - arch_reflector
     - aurutils
+    - security_keys
     - systemd_ssh_agent
     - networkmanager
     - role: local_unbound
