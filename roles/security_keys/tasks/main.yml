@@ -9,3 +9,9 @@
   package:
     name: [libfido2, yubikey-manager]
     state: present
+
+- name: Enable smart card interface service
+  service:
+    name: 'pcscd'
+    enabled: yes
+    state: started
