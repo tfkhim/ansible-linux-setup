@@ -15,17 +15,3 @@
     name: fwupd
     enabled: yes
 
-- name: Create a backup of uefi.conf
-  copy:
-    remote_src: yes
-    force: no
-    src: /etc/fwupd/uefi.conf
-    dest: /etc/fwupd/uefi.conf.orig
-
-- name: Set the path to the EFI system partition
-  ini_file:
-    path: /etc/fwupd/uefi.conf
-    section: uefi
-    option: OverrideESPMountPoint
-    value: '{{fwupd_esp_mount_point}}'
-  when: fwupd_esp_mount_point is defined

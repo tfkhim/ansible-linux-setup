@@ -17,8 +17,8 @@
     dest: '{{item.dest}}'
     mode: u=rw,g=,o=
   with_items:
-    - {src: 'private_data/db.key', dest: '/etc/efi-keys/DB.key'}
-    - {src: 'private_data/db.crt', dest: '/etc/efi-keys/DB.crt'}
+    - {src: '{{secure_boot_dir}}/db.key', dest: '/etc/efi-keys/DB.key'}
+    - {src: '{{secure_boot_dir}}/db.crt', dest: '/etc/efi-keys/DB.crt'}
 
 - name: Build AUR package
   become_user: '{{aur_build_user}}'
