@@ -1,0 +1,18 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2021 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+- name: Install packages for neovim
+  package:
+    name: [neovim]
+    state: present
+
+- name: Include tasks for Neovim setup for a single user
+  include_tasks: 'single_user_setup.yml'
+  when: neovim_users is defined
+  loop: '{{neovim_users}}'
+  loop_control:
+    loop_var: neovim_user

@@ -10,6 +10,7 @@
     - firefox_users: ['{{username}}']
     - ssh_agent_users: ['{{username}}']
     - syncthing_users: ['{{username}}']
+    - neovim_users: ['{{username}}']
     - vbox_allowed_users: ['{{username}}']
     - vbox_sf_users: ['{{username}}']
     - sane_frontends: [skanlite, gscan2pdf]
@@ -21,6 +22,7 @@
     - security_keys
     - systemd_ssh_agent
     - networkmanager
+    - neovim
     - role: local_unbound
       when: install_unbound is defined and install_unbound
     - role: fwupd

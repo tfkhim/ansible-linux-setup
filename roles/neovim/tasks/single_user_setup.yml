@@ -1,0 +1,36 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2021 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+- name: Create config directories
+  become_user: '{{neovim_user}}'
+  become: yes
+  file:
+    path: '/home/{{neovim_user}}/{{item}}'
+    state: directory
+    mode: u=rwx,g=rx,o=rx
+  loop:
+    - '.config'
+    - '.config/nvim'
+    - '.local'
+    - '.local/share'
+    - '.local/share/nvim'
+    - '.local/share/nvim/site'
+    - '.local/share/nvim/site/autoload'
+
+- name: Install vim-plug
+  become_user: '{{neovim_user}}'
+  become: yes
+  copy:
+    src: '{{neovim_files_dir}}/plug.vim'
+    dest: '/home/{{neovim_user}}/.local/share/nvim/site/autoload'
+
+- name: Copy init.vim file
+  become_user: '{{neovim_user}}'
+  become: yes
+  copy:
+    src: init.vim
+    dest: '/home/{{neovim_user}}/.config/nvim/'
