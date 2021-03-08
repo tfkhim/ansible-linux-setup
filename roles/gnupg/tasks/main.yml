@@ -5,7 +5,13 @@
 # This software may be freely distributed under the MIT license. You should
 # have received a copy of the MIT License along with this program.
 
-- name: Install packages for yubikey
+- name: Install packages for gnupg
   package:
-    name: [libfido2, yubikey-manager]
+    name: [gnupg, pcsclite, ccid]
     state: present
+
+- name: Enable smart card interface service
+  service:
+    name: pcscd.socket
+    enabled: yes
+    state: started
