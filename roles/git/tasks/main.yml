@@ -1,0 +1,19 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2021 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+- name: Install required packages for Git
+  package:
+    name: git
+    state: present
+
+- name: Copy user specific Git configuraiton
+  become_user: '{{item}}'
+  become: yes
+  copy:
+    src: '{{git_files_dir}}/{{item}}.gitconfig'
+    dest: /home/{{item}}/.gitconfig
+  loop: '{{git_users}}'
