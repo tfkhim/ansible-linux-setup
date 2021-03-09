@@ -34,3 +34,13 @@
   copy:
     src: init.vim
     dest: '/home/{{neovim_user}}/.config/nvim/'
+
+- name: Set the EDITOR environment variable to nvim
+  become_user: '{{neovim_user}}'
+  become: yes
+  lineinfile:
+    path: /home/{{neovim_user}}/.pam_environment
+    state: present
+    create: yes
+    regex: '^#?EDITOR=.*$'
+    line: 'EDITOR="/usr/bin/nvim"'
