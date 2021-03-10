@@ -194,10 +194,10 @@
     groups: lp
     append: yes
 
-- name: Install public key for '{{username}}' user
+- name: Install public keys for '{{username}}' user
   authorized_key:
     user: '{{username}}'
     state: present
-    key: '{{public_key}}'
+    key: '{{public_keys}}'
     exclusive: yes
 
