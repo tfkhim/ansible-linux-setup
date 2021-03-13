@@ -7,5 +7,27 @@
 
 - name: Install packages for yubikey
   package:
-    name: [libfido2, yubikey-manager]
+    name: [libfido2, pam-u2f, yubikey-manager]
     state: present
+
+- name: Enable passwordless sudo
+  lineinfile:
+    path: /etc/pam.d/sudo
+    state: present
+    insertbefore: '^\s*auth.*$'
+    firstmatch: yes
+    line: 'auth            sufficient      pam_u2f.so origin=pam://{{ansible_facts["nodename"]}} appid=pam://{{ansible_facts["nodename"]}}'
+
+- name: Check if /etc/pam.d/sddm exists
+  stat:
+    path: /etc/pam.d/sddm
+  register: sddm_pam_stat
+
+- name:
+  lineinfile:
+    path: /etc/pam.d/sddm
+    state: present
+    insertbefore: '^\s*auth.*$'
+    firstmatch: yes
+    line: 'auth            sufficient      pam_u2f.so origin=pam://{{ansible_facts["nodename"]}} appid=pam://{{ansible_facts["nodename"]}}'
+  when: sddm_pam_stat.stat.exists
