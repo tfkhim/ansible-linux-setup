@@ -20,10 +20,15 @@
     - {src: '{{secure_boot_dir}}/db.key', dest: '/etc/efi-keys/DB.key'}
     - {src: '{{secure_boot_dir}}/db.crt', dest: '/etc/efi-keys/DB.crt'}
 
+- name: Import maintainer signing key
+  become_user: '{{aur_build_user}}'
+  become: yes
+  command: gpg --recv-key 96F281C741F4F2693E96885BF6532C30466E8B3E
+
 - name: Build AUR package
   become_user: '{{aur_build_user}}'
   become: yes
-  command: aur sync sbupdate-git
+  command: aur sync --noview sbupdate-git
 
 - name: Install AUR package with pacman
   pacman:
