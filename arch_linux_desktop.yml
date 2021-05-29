@@ -14,6 +14,7 @@
     - git_users: ['{{username}}']
     - vbox_allowed_users: ['{{username}}']
     - vbox_sf_users: ['{{username}}']
+    - podman_users: ['{{username}}']
     - sane_frontends: [skanlite, gscan2pdf]
     - android_dev_user: '{{username}}'
   roles:
@@ -39,6 +40,8 @@
       when: install_vbox is defined and install_vbox
     - role: qemu
       when: install_qemu is defined and install_qemu
+    - role: podman
+      when: install_podman is defined and install_podman
     - role: desktop_applications
       when: install_applications is defined and install_applications
     - role: android_dev
