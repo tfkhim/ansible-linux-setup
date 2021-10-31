@@ -10,10 +10,32 @@
     name: git
     state: present
 
-- name: Copy user specific Git configuraiton
-  become_user: '{{item}}'
-  become: yes
-  copy:
-    src: '{{git_files_dir}}/{{item}}.gitconfig'
-    dest: /home/{{item}}/.gitconfig
-  loop: '{{git_users}}'
+- name: Ensure group '{{git_server_group}}' exists
+  group:
+    name: '{{git_server_group}}'
+    state: present
+
+- name: Ensure user '{{git_server_user}}' exists
+  user:
+    name: '{{git_server_user}}'
+    home: '{{git_server_user_home}}'
+    group: '{{git_server_group}}'
+    shell: '/usr/bin/git-shell'
+    state: present
+
+- name: Create the home folder
+  file:
+    path: '{{git_server_user_home}}'
+    state: directory
+    owner: '{{git_server_user}}'
+    group: '{{git_server_group}}'
+    mode: 'u=rwx,g=rx,o='
+
+- name: Install public keys for '{{git_server_user}}' user
+  authorized_key:
+    user: '{{git_server_user}}'
+    state: present
+    key: '{{git_user_authorized_key}}'
+    key_options: 'no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty'
+    exclusive: yes
+  when: git_user_authorized_key is defined
