@@ -132,6 +132,7 @@
       - bash-completion
       - devtools
       - vifm
+      - signify
     state: present
     update_cache: yes
     extra_args: '--asdeps'
