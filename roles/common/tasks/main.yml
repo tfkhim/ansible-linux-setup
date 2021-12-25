@@ -49,38 +49,6 @@
     enabled: '{{ssh_enable_daemon}}'
 
 ##############################################################################
-# Configure DHCP client
-##############################################################################
-
-- name: Create a backup of dhcpcd.conf
-  copy:
-    remote_src: yes
-    force: no
-    src: /etc/dhcpcd.conf
-    dest: /etc/dhcpcd.conf.orig
-
-- name: Check if the correct slaac mode is already set in DHCP configuration
-  lineinfile:
-    path: /etc/dhcpcd.conf
-    line: 'slaac {{slaac_mode}}'
-  check_mode: yes
-  register: slaac_mode_check
-
-- name: Initially disable all slaac settings in DHCP configuration
-  replace:
-    path: /etc/dhcpcd.conf
-    regexp: '^slaac (.*)$'
-    replace: '#slaac \1'
-  when: slaac_mode_check is changed
-
-- name: Set requested slaac mode in DHCP configuration
-  lineinfile:
-    path: /etc/dhcpcd.conf
-    regexp: '^#?slaac {{slaac_mode}}'
-    line: 'slaac {{slaac_mode}}'
-  when: slaac_mode_check is changed
-
-##############################################################################
 # Install and configure sudo
 ##############################################################################
 
