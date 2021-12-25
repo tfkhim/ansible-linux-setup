@@ -13,21 +13,28 @@
 
 - name: Install NetworkManager package
   package:
-    name: [networkmanager, openresolv]
+    name: networkmanager
     state: present
+
+- name: Enable NetworkManager service
+  service:
+    name: NetworkManager
+    enabled: yes
+
+- name: Install openresolv package
+  package:
+    name: openresolv
+    state: present
+  when: nm_use_openresolv
 
 - name: Configure NetworkManager to use openresolv
   copy:
     src: rc-manager.conf
     dest: /etc/NetworkManager/conf.d
+  when: nm_use_openresolv
 
 - name: Install the OpenVPN integraton
   package:
     name: networkmanager-openvpn
     state: present
   when: nm_install_openvpn
-
-- name: Enable NetworkManager service
-  service:
-    name: NetworkManager
-    enabled: yes
