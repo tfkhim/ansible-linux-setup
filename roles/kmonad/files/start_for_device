@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+SCRIPT_DIR="$(dirname $0)"
+CONFIG_TEMPLATE="${SCRIPT_DIR}/template.kbd"
+DEVICE_FILE="$1"
+
+CONFIG_FILE="$(mktemp --tmpdir kmonad.XXXXXXXXXX.kbd)"
+
+sed -e "s+<<DEVICE_FILE>>+${DEVICE_FILE}+g" "${CONFIG_TEMPLATE}" >"${CONFIG_FILE}"
+
+/usr/bin/kmonad "${CONFIG_FILE}"
+
+rm -f "${CONFIG_FILE}"

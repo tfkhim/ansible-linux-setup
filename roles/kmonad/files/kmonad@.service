@@ -1,0 +1,12 @@
+[Unit]
+Description=kmonad (%I)
+StopWhenUnneeded=yes
+
+[Service]
+Restart=always
+RestartSec=3
+ExecStart=/usr/share/kmonad_config/start_for_device %I
+Nice=-20
+
+[Install]
+WantedBy=default.target

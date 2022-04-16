@@ -1,0 +1,44 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2022 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+- name: Build and publish kmonad-bin AUR package
+  become_user: '{{aur_build_user}}'
+  become: yes
+  command: aur sync --noview kmonad-bin
+
+- name: Install kmonad-bin
+  pacman:
+    name: kmonad-bin
+    state: present
+    update_cache: yes
+
+- name: Create system wide configuration directory
+  file:
+    path: /usr/share/kmonad_config
+    state: directory
+
+- name: Copy start script
+  copy:
+    src: start_for_device
+    dest: /usr/share/kmonad_config
+    mode: u=rwx,go=rx
+
+- name: Copy configuration file
+  copy:
+    src: '{{kmonad_template}}'
+    dest: /usr/share/kmonad_config/template.kbd
+
+- name: Copy systemd service unit file
+  copy:
+    src: kmonad@.service
+    dest: /etc/systemd/system
+
+- name: Create udev rules for known devices
+  template:
+    src: 99-kmonad-service.rules.j2
+    dest: /etc/udev/rules.d/99-kmonad-service.rules
+    mode: u=rw,go=r

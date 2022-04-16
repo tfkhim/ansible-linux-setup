@@ -1,0 +1,16 @@
+DEVPATH=="*virtual*", GOTO="kmonad_inputs_end"
+ACTION=="add", KERNEL=="event*", SUBSYSTEM=="input", ENV{ID_INPUT_KEYBOARD}=="?*", GOTO="kmonad_inputs_start"
+
+GOTO="kmonad_inputs_end"
+
+LABEL="kmonad_inputs_start"
+
+{% for path in kmonad_udev_paths %}
+ENV{ID_PATH}=="{{path}}", TAG+="systemd", ENV{SYSTEMD_WANTS}="kmonad@$env{DEVNAME}.service"
+{% endfor %}
+
+{% for serial in kmonad_udev_serials %}
+ENV{ID_SERIAL}=="{{serial}}", TAG+="systemd", ENV{SYSTEMD_WANTS}="kmonad@$env{DEVNAME}.service"
+{% endfor %}
+
+LABEL="kmonad_inputs_end"
