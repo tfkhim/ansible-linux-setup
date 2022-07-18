@@ -30,6 +30,7 @@
     - '.config'
     - '.config/sway'
     - '.config/waybar'
+    - '.config/alacritty'
     - '.local'
     - '.local/share'
     - '.local/share/applications'
@@ -61,6 +62,13 @@
   copy:
     src: 'waybar.style.css'
     dest: '/home/{{sway_user}}/.config/waybar/style.css'
+
+- name: Copy Alacritty configuration
+  become_user: '{{sway_user}}'
+  become: yes
+  copy:
+    src: 'alacritty.yml'
+    dest: '/home/{{sway_user}}/.config/alacritty/alacritty.yml'
 
 - name: Copy *.desktop entries
   become_user: '{{sway_user}}'
