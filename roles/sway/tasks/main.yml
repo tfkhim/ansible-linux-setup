@@ -14,7 +14,7 @@
       - swaylock
       - alacritty
       - waybar
-      - ttf-nerd-fonts-symbols-mono
+      - ttf-nerd-fonts-symbols-1000-em
       - wofi
       - brightnessctl
     state: present
