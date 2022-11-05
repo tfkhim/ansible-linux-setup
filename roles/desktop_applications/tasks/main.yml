@@ -118,10 +118,16 @@
 # Install a text editor
 ##############################################################################
 
-- name: Install Visual Studio Code
-  package:
-    name: code
+- name: Build and publish visual-studio-code-bin AUR package
+  become_user: '{{aur_build_user}}'
+  become: yes
+  command: aur sync --noview visual-studio-code-bin
+
+- name: Install visual-studio-code-bin
+  pacman:
+    name: visual-studio-code-bin
     state: present
+    update_cache: yes
 
 ##############################################################################
 # Install a LaTex
