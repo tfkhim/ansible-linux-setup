@@ -98,15 +98,6 @@
     - 'reboot.desktop'
     - 'shutdown.desktop'
 
-- name: Copy /etc/skel/.bash_profile if it does not exit
-  become_user: '{{sway_user}}'
-  become: yes
-  copy:
-    remote_src: yes
-    force: no
-    src: /etc/skel/.bash_profile
-    dest: /home/{{sway_user}}/.bash_profile
-
 - name: Add Sway startup command to ~/.bash_profile
   become_user: '{{sway_user}}'
   become: yes

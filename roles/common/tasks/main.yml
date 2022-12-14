@@ -169,3 +169,12 @@
     key: '{{public_keys}}'
     exclusive: yes
 
+- name: Copy /etc/skel/.bash_profile for '{{username}}' user
+  become_user: '{{username}}'
+  become: yes
+  copy:
+    remote_src: yes
+    force: no
+    src: /etc/skel/.bash_profile
+    dest: /home/{{username}}/.bash_profile
+    mode: 'u=rx,g=r,o=r'

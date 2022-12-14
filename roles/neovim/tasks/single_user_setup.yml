@@ -39,8 +39,8 @@
   become_user: '{{neovim_user}}'
   become: yes
   lineinfile:
-    path: /home/{{neovim_user}}/.pam_environment
+    path: /home/{{neovim_user}}/.bash_profile
     state: present
     create: yes
-    regex: '^#?EDITOR=.*$'
-    line: 'EDITOR="/usr/bin/nvim"'
+    regex: '^#?export EDITOR=.*$'
+    line: 'export EDITOR="/usr/bin/nvim"'

@@ -55,16 +55,16 @@
   loop: '{{ssh_agent_users}}'
 
 ##############################################################################
-# Configure pam_env so clients can find the started ssh-agent instance
+# Configure session so clients can find the started ssh-agent instance
 ##############################################################################
 
-- name: Add SSH_AUTH_SOCK variable to ~/.pam_environment
+- name: Set the SSH_AUTH_SOCK variable
   become_user: '{{item}}'
   become: yes
   lineinfile:
-    path: /home/{{item}}/.pam_environment
+    path: /home/{{item}}/.bash_profile
     state: present
     create: yes
-    regex: '^#?SSH_AUTH_SOCK DEFAULT=.*$'
-    line: 'SSH_AUTH_SOCK DEFAULT="${XDG_RUNTIME_DIR}/ssh-agent.socket"'
+    regex: '^#?export SSH_AUTH_SOCK DEFAULT=.*$'
+    line: 'export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"'
   loop: '{{ssh_agent_users}}'
