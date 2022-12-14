@@ -1,0 +1,9 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2022 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+sway_workspace_extras_version: '0.1.0'
+sway_workspace_extras_checksum: 'sha512:b465cfec3baec80ecd4f5e1923a6fb8c41d9909a0d175e6b0aa20aa7d0873ec7a7d5d4fafd00895d17aada32c6b045bdae7054fae8ef4713793b37f851f11a10'

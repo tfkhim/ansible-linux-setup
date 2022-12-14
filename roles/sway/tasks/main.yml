@@ -19,6 +19,22 @@
       - brightnessctl
     state: present
 
+- name: Create directories for sway-workspace-extras
+  file:
+    path: '{{item}}'
+    state: directory
+    mode: u=rwx,g=rx,o=rx
+  loop:
+    - '/opt'
+    - '/opt/sway-workspace-extras'
+
+- name: Download sway-workspace-extras binary
+  get_url:
+    url: 'https://github.com/tfkhim/sway-workspace-extras/releases/download/{{sway_workspace_extras_version}}/binary-v{{sway_workspace_extras_version}}-linux-x86_64'
+    dest: '/opt/sway-workspace-extras/sway-workspace-extras'
+    mode: 'u=rwx,g=rx,o=rx'
+    checksum: '{{sway_workspace_extras_checksum}}'
+
 - name: Create config directories
   become_user: '{{sway_user}}'
   become: yes
