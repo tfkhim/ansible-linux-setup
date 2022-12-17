@@ -30,8 +30,11 @@
       - kwalletmanager
       - gwenview
       - okular
-      - pulseaudio
-      - plasma-pa
+      - pipewire
+      - pipewire-pulse
+      - kpipewire
+      - xdg-desktop-portal
+      - xdg-desktop-portal-kde
       - phonon-qt5
       - phonon-qt5-gstreamer
       - kscreen
@@ -59,12 +62,6 @@
     name: bluedevil
     state: present
   when: kde_install_bluedevil
-
-- name: Install pluseaudio bluetooth support
-  package:
-    name: pulseaudio-bluetooth
-    state: present
-  when: install_bluetooth is defined and install_bluetooth
 
 - name: Install va-api support for Phonon
   package:

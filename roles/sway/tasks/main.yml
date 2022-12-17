@@ -17,6 +17,12 @@
       - ttf-nerd-fonts-symbols-1000-em
       - wofi
       - brightnessctl
+      - pipewire
+      - pipewire-pulse
+      - wireplumber
+      - pavucontrol
+      - xdg-desktop-portal
+      - xdg-desktop-portal-wlr
     state: present
 
 - name: Create directories for sway-workspace-extras
@@ -105,5 +111,6 @@
     path: /home/{{sway_user}}/.bash_profile
     block: |
       if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
+        export XDG_CURRENT_DESKTOP=sway
         exec sway
       fi
