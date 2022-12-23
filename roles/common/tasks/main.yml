@@ -141,6 +141,15 @@
   when: install_bluetooth is defined and install_bluetooth
 
 ##############################################################################
+# Install ZSH
+##############################################################################
+
+- name: Install packages for zsh
+  package:
+    name: [zsh, zsh-completions, zsh-theme-powerlevel10k]
+    state: present
+
+##############################################################################
 # Create the default user and give him the needed permissions
 ##############################################################################
 
@@ -148,6 +157,7 @@
   user:
     name: '{{username}}'
     password: "{{password}}"
+    shell: '/usr/bin/zsh'
     state: present
 
 - name: Add '{{username}}' to '{{sudo_group}}' group
@@ -168,13 +178,3 @@
     state: present
     key: '{{public_keys}}'
     exclusive: yes
-
-- name: Copy /etc/skel/.bash_profile for '{{username}}' user
-  become_user: '{{username}}'
-  become: yes
-  copy:
-    remote_src: yes
-    force: no
-    src: /etc/skel/.bash_profile
-    dest: /home/{{username}}/.bash_profile
-    mode: 'u=rx,g=r,o=r'

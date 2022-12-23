@@ -34,13 +34,3 @@
   copy:
     src: init.vim
     dest: '/home/{{neovim_user}}/.config/nvim/'
-
-- name: Set the EDITOR environment variable to nvim
-  become_user: '{{neovim_user}}'
-  become: yes
-  lineinfile:
-    path: /home/{{neovim_user}}/.bash_profile
-    state: present
-    create: yes
-    regex: '^#?export EDITOR=.*$'
-    line: 'export EDITOR="/usr/bin/nvim"'
