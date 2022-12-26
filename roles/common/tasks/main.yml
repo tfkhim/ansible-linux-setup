@@ -76,6 +76,11 @@
     name: bash-completion
     state: present
 
+- name: Install fuzzy finder
+  package:
+    name: fzf
+    state: present
+
 ##############################################################################
 # Install and configure NTP
 ##############################################################################

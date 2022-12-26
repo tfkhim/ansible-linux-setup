@@ -1,5 +1,5 @@
 key_bindings:
-  - { key: T, mods: Control, action: CreateNewWindow }
+  - { key: T, mods: Control|Shift, action: CreateNewWindow }
 
 # KDE Breeze color scheme
 colors:
