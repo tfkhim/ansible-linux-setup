@@ -23,6 +23,7 @@
       - pavucontrol
       - xdg-desktop-portal
       - xdg-desktop-portal-wlr
+      - dunst
     state: present
 
 - name: Create directories for sway-workspace-extras
