@@ -1,5 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Reboot
-Exec=/usr/bin/systemctl reboot
-Categories=System;

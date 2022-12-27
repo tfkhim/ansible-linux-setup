@@ -1,5 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Hibernate
-Exec=/usr/bin/systemctl hibernate
-Categories=System;

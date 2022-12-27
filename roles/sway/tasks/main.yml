@@ -42,27 +42,3 @@
     dest: '/opt/sway-workspace-extras/sway-workspace-extras'
     mode: 'u=rwx,g=rx,o=rx'
     checksum: '{{sway_workspace_extras_checksum}}'
-
-- name: Create config directories
-  become_user: '{{sway_user}}'
-  become: yes
-  file:
-    path: '/home/{{sway_user}}/{{item}}'
-    state: directory
-    mode: u=rwx,g=rx,o=rx
-  loop:
-    - '.local'
-    - '.local/share'
-    - '.local/share/applications'
-
-- name: Copy *.desktop entries
-  become_user: '{{sway_user}}'
-  become: yes
-  copy:
-    src: '{{item}}'
-    dest: '/home/{{sway_user}}/.local/share/applications'
-  loop:
-    - 'hibernate.desktop'
-    - 'logout.desktop'
-    - 'reboot.desktop'
-    - 'shutdown.desktop'
