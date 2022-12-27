@@ -51,18 +51,9 @@
     state: directory
     mode: u=rwx,g=rx,o=rx
   loop:
-    - '.config'
-    - '.config/alacritty'
     - '.local'
     - '.local/share'
     - '.local/share/applications'
-
-- name: Copy Alacritty configuration
-  become_user: '{{sway_user}}'
-  become: yes
-  copy:
-    src: 'alacritty.yml'
-    dest: '/home/{{sway_user}}/.config/alacritty/alacritty.yml'
 
 - name: Copy *.desktop entries
   become_user: '{{sway_user}}'
