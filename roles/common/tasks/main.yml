@@ -151,7 +151,7 @@
 
 - name: Install packages for zsh
   package:
-    name: [zsh, zsh-completions, zsh-theme-powerlevel10k]
+    name: [zsh, zsh-completions, zsh-theme-powerlevel10k, ttf-hack-nerd]
     state: present
 
 ##############################################################################
