@@ -8,6 +8,7 @@
 - name: Install required packages
   package:
     name:
+      - chezmoi
       - sway
       - swaybg
       - swayidle
@@ -51,40 +52,10 @@
     mode: u=rwx,g=rx,o=rx
   loop:
     - '.config'
-    - '.config/sway'
-    - '.config/waybar'
     - '.config/alacritty'
     - '.local'
     - '.local/share'
     - '.local/share/applications'
-
-- name: Copy main Sway configuration file
-  become_user: '{{sway_user}}'
-  become: yes
-  copy:
-    src: 'sway.config'
-    dest: '/home/{{sway_user}}/.config/sway/config'
-
-- name: Copy Sway dropin configuration
-  become_user: '{{sway_user}}'
-  become: yes
-  copy:
-    src: 'sway.config.d/'
-    dest: '/home/{{sway_user}}/.config/sway/config.d'
-
-- name: Copy Waybar configuration
-  become_user: '{{sway_user}}'
-  become: yes
-  copy:
-    src: 'waybar.config'
-    dest: '/home/{{sway_user}}/.config/waybar/config'
-
-- name: Copy Waybar styling
-  become_user: '{{sway_user}}'
-  become: yes
-  copy:
-    src: 'waybar.style.css'
-    dest: '/home/{{sway_user}}/.config/waybar/style.css'
 
 - name: Copy Alacritty configuration
   become_user: '{{sway_user}}'
