@@ -17,6 +17,8 @@
     insertbefore: '^\s*auth.*$'
     firstmatch: yes
     line: 'auth            sufficient      pam_u2f.so origin=pam://{{ansible_facts["nodename"]}} appid=pam://{{ansible_facts["nodename"]}}'
+  when:
+    enable_passwordless_sudo is defined and enable_passwordless_sudo
 
 - name: Check if /etc/pam.d/sddm exists
   stat:
