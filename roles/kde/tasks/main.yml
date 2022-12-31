@@ -63,18 +63,6 @@
     state: present
   when: kde_install_bluedevil
 
-- name: Install va-api support for Phonon
-  package:
-    name: gstreamer-vaapi
-    state: present
-  when: kde_va_api == 'va-api'
-
-- name: Install VDPAU support for Phonon
-  package:
-    name: gst-plugins-bad
-    state: present
-  when: kde_va_api == 'vdpau'
-
 ##############################################################################
 # Theme and design configuration
 ##############################################################################

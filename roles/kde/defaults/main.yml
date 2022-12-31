@@ -10,5 +10,3 @@ kde_install_bluedevil: no
 
 kde_sddm_theme: breeze
 kde_sddm_cursor_theme: breeze_cursors
-
-kde_va_api: none

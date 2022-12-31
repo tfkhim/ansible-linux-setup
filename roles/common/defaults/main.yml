@@ -8,3 +8,5 @@
 ssh_enable_daemon: yes
 
 slaac_mode: private
+
+gstreamer_va_api: none

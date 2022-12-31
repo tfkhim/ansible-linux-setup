@@ -126,6 +126,18 @@
     dest: /etc/profile.d/va_api_config.sh
   when: va_api_driver_name is defined and va_api_driver_path is defined
 
+- name: Install va-api support for GStreamer
+  package:
+    name: gstreamer-vaapi
+    state: present
+  when: gstreamer_va_api == 'va-api'
+
+- name: Install VDPAU support for GStreamer
+  package:
+    name: gst-plugins-bad
+    state: present
+  when: gstreamer_va_api == 'vdpau'
+
 ##############################################################################
 # Install bluetooth support
 ##############################################################################
