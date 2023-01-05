@@ -26,6 +26,8 @@
       - xdg-desktop-portal
       - xdg-desktop-portal-wlr
       - dunst
+      - qt5-wayland
+      - xorg-xwayland
     state: present
 
 - name: Create directories for sway-workspace-extras
