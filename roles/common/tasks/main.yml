@@ -81,6 +81,11 @@
     name: fzf
     state: present
 
+- name: Install man-db
+  package:
+    name: man-db
+    state: present
+
 ##############################################################################
 # Install and configure NTP
 ##############################################################################
