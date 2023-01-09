@@ -86,6 +86,11 @@
     name: man-db
     state: present
 
+- name: Install usbutils
+  package:
+    name: usbutils
+    state: present
+
 ##############################################################################
 # Install and configure NTP
 ##############################################################################
