@@ -6,6 +6,5 @@
 # have received a copy of the MIT License along with this program.
 
 dependencies:
-  - role: xorg_server
-  - role: sddm
-
+  - role: tfkhim.linux_setup.xorg_server
+  - role: tfkhim.linux_setup.sddm

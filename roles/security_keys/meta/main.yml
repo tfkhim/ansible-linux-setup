@@ -6,4 +6,4 @@
 # have received a copy of the MIT License along with this program.
 
 dependencies:
-  - role: gnupg
+  - role: tfkhim.linux_setup.gnupg
