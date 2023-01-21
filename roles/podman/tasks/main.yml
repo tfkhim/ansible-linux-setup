@@ -7,7 +7,7 @@
 
 - name: Install packages for podman
   package:
-    name: [podman]
+    name: podman
     state: present
 
 - name: Allocate subuid
@@ -17,7 +17,7 @@
     create: yes
     regex: '^{{item}}:.*$'
     line: '{{item}}:100000:65536'
-  loop: '{{podman_users}}'
+  loop: '{{rootless_podman_users}}'
 
 - name: Allocate subgid
   lineinfile:
@@ -26,4 +26,4 @@
     create: yes
     regex: '^{{item}}:.*$'
     line: '{{item}}:100000:65536'
-  loop: '{{podman_users}}'
+  loop: '{{rootless_podman_users}}'
