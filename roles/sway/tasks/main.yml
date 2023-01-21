@@ -22,6 +22,7 @@
       - kanshi
       - pipewire
       - pipewire-pulse
+      - pipewire-alsa
       - wireplumber
       - pavucontrol
       - xdg-desktop-portal
