@@ -1,0 +1,10 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2023 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+dependencies:
+  - role: tfkhim.linux_setup.aurutils
+    when: rootless_docker_users | length>0

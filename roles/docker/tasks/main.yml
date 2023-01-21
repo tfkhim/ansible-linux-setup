@@ -1,0 +1,60 @@
+# Private Ansible playbook
+#
+# Copyright (C) 2023 T. Himmelstoss
+#
+# This software may be freely distributed under the MIT license. You should
+# have received a copy of the MIT License along with this program.
+
+##############################################################################
+# Install and configure Docker
+##############################################################################
+
+- name: Install the Docker packages
+  package:
+    name: [docker, docker-compose]
+    state: present
+
+- name: Add users to docker group
+  user:
+    name: '{{item}}'
+    groups: docker
+    append: yes
+  loop: '{{docker_group_members}}'
+
+- name: Enable docker service
+  service:
+    name: docker
+    enabled: yes
+    state: started
+  when: docker_start_service is defined and docker_start_service
+
+- name: Build docker-rootless-extras package
+  become_user: '{{aur_build_user}}'
+  become: yes
+  command: aur sync --noview docker-rootless-extras
+  when: rootless_docker_users | length>0
+
+- name: Install packages for rootless Docker
+  pacman:
+    name: docker-rootless-extras, fuse-overlayfs
+    state: present
+    update_cache: yes
+  when: rootless_docker_users | length>0
+
+- name: Allocate subuid
+  lineinfile:
+    path: /etc/subuid
+    state: present
+    create: yes
+    regex: '^{{item}}:.*$'
+    line: '{{item}}:100000:65536'
+  loop: '{{rootless_docker_users}}'
+
+- name: Allocate subgid
+  lineinfile:
+    path: /etc/subgid
+    state: present
+    create: yes
+    regex: '^{{item}}:.*$'
+    line: '{{item}}:100000:65536'
+  loop: '{{rootless_docker_users}}'
