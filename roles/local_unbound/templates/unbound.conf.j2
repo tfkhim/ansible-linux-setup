@@ -11,6 +11,13 @@ server:
   unblock-lan-zones: yes
   insecure-lan-zones: yes
 
+  # The next three lines enable forwarding of the
+  # test special-use domain. This domain is useful
+  # for local development (e.g. for minikube ingress).
+  local-zone: "test." nodefault
+  private-domain: "test"
+  domain-insecure: "test"
+
 {% for domain in unbound_private_domains %}
   private-domain: "{{domain}}"
   domain-insecure: "{{domain}}"
