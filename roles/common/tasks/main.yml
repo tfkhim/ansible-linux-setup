@@ -91,6 +91,11 @@
     name: usbutils
     state: present
 
+- name: Install zip and unzip
+  package:
+    name: [zip, unzip]
+    state: present
+
 ##############################################################################
 # Install and configure NTP
 ##############################################################################
