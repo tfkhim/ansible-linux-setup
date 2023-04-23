@@ -31,6 +31,9 @@
       - dunst
       - qt5-wayland
       - xorg-xwayland
+      - grim
+      - slurp
+      - swappy
     state: present
 
 - name: Create directories for sway-workspace-extras
