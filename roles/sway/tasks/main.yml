@@ -21,6 +21,7 @@
       - wofi
       - brightnessctl
       - kanshi
+      - wl-clipboard
       - pipewire
       - pipewire-pulse
       - pipewire-alsa
