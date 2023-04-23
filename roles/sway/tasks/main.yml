@@ -35,6 +35,7 @@
       - grim
       - slurp
       - swappy
+      - nemo
     state: present
 
 - name: Create directories for sway-workspace-extras
