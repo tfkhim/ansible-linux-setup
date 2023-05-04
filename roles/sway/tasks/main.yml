@@ -36,6 +36,11 @@
       - slurp
       - swappy
       - nemo
+      - kitty
+      - ranger
+      # The python-pillow library is a requirement for ranger to
+      # use Kitty for image previews
+      - python-pillow
     state: present
 
 - name: Create directories for sway-workspace-extras
