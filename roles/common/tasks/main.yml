@@ -96,6 +96,11 @@
     name: [zip, unzip]
     state: present
 
+- name: Install git and git-delta
+  package:
+    name: [git, git-delta]
+    state: present
+
 ##############################################################################
 # Install and configure NTP
 ##############################################################################
