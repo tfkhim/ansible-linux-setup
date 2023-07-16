@@ -58,3 +58,14 @@
     dest: '/opt/sway-workspace-extras/sway-workspace-extras'
     mode: 'u=rwx,g=rx,o=rx'
     checksum: '{{sway_workspace_extras_checksum}}'
+
+- name: Build wl-mirror AUR package
+  become_user: '{{aur_build_user}}'
+  become: yes
+  command: aur sync --noview wl-mirror
+
+- name: Install wl-mirror package with pacman
+  pacman:
+    name: wl-mirror
+    state: present
+    update_cache: yes
