@@ -144,7 +144,13 @@
 
 - name: Install TeX Live distribution
   package:
-    name: [texlive-core, texlive-lang, texlive-fontsextra]
+    name:
+      - texlive-core
+      - texlive-binextra
+      - texlive-lang
+      - texlive-fontsrecommended
+      - texlive-fontsextra
+      - texlive-langgerman
     state: present
 
 ##############################################################################
